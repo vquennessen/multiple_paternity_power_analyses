@@ -1,7 +1,7 @@
 # Q2 heatmaps
 
 # set working directory
-setwd("~/Projects/power analysis")
+setwd("~/Projects/multiple_paternity_power_analyses")
 
 # load libraries
 library(dplyr)
@@ -11,17 +11,22 @@ library(patchwork)
 
 # model parameters
 # fertilization modes
-fmodes <- c('random', 
-            'exponential',
-            'dominant50',
-            'dominant70',
-            'dominant90',
-            'mixed_dominant')
+fmodes <- c('random',
+            # 'exponential',
+            # 'dominant50',
+            # 'dominant70',
+            # 'mixed_dominant', 
+            'dominant90')
+# fmodes <- c('random')
+# fmodes <- c('exponential')
+# fmodes <- c('mixed_dominant')
+
 
 # fertilization mode titles
-fmode_titles <- c('Random', 'Exponential', 
-                  'Dominant 50', 'Dominant 70', 'Dominant 90', 
-                  'Mixed Dominant')
+fmode_titles <- c('Random', # 'Exponential', 
+                  # 'Dominant 50', 'Dominant 70', 
+                  # 'Mixed Dominant',
+                  'Dominant 90')
 
 # sample sizes
 sample_sizes <- c(32, 96)
@@ -46,8 +51,9 @@ for (f in 1:length(fmodes)) {
     sample_size <- sample_sizes[s]
     
     # load data
-    load(paste('~/Projects/power analysis/output', sample_size, 
-               '_nests_to_sample_', fmode, '_', nsims, '.Rdata', sep = ''))
+    load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
+               sample_size, '_nests_to_sample_', fmode, '_', nsims, '.Rdata', 
+               sep = ''))
     DF1 <- output
     
     # fertilization mode and sample size vectors
@@ -84,13 +90,24 @@ fig4 <- ggplot(data = DF, aes(x = PropNests, y = OSR, fill = Proportion)) +
                        limits = c(0, 1),
                        na.value = 'gray') +
   xlab('Proportion of Nests Sampled') +
-  ylab('Breeding Sex Ratio') +
+  ylab('Operational Sex Ratio') +
   labs(fill = 'Proportion \n') +
   # geom_text(aes(label = round(Proportion, 2))) +
-  theme(text = element_text(size = 15)) +
-  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size))
+  theme(text = element_text(size = 25)) +
+  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size)) +
+  theme(panel.spacing.x=unit(1.5, "lines")) +
+  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
+
+
 
 fig4
+
+# save heatmap
+ggsave(fig4,
+       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Fprobs.png',
+       height = 6, width = 12)
 
 # # dimensions
 # nBSR <- n_distinct(DF1$BSR)
@@ -98,10 +115,7 @@ fig4
 
 ################################################################################
 
-# # save heatmap
-# ggsave(fig32, 
-#        file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/32_mixed_dominant.png', 
-#        height = 4, width = 6)
+
 ################################################################################
 
 # # sample size 96 heatmap

@@ -1,0 +1,11 @@
+2024-07-03 15:49:50 - sample size 32 - random - 100 sims
+2024-07-03 15:49:51 - sample size 32 - random - 100 sims - 10% done!
+2024-07-03 15:49:53 - sample size 32 - random - 100 sims - 20% done!
+2024-07-03 15:49:56 - sample size 32 - random - 100 sims - 30% done!
+2024-07-03 15:50:01 - sample size 32 - random - 100 sims - 40% done!
+2024-07-03 15:50:05 - sample size 32 - random - 100 sims - 50% done!
+2024-07-03 15:50:10 - sample size 32 - random - 100 sims - 60% done!
+2024-07-03 15:50:15 - sample size 32 - random - 100 sims - 70% done!
+2024-07-03 15:50:21 - sample size 32 - random - 100 sims - 80% done!
+2024-07-03 15:50:28 - sample size 32 - random - 100 sims - 90% done!
+2024-07-03 15:50:36 - sample size 32 - random - 100 sims - 100% done!

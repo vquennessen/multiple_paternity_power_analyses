@@ -1,18 +1,18 @@
 ### machine runs
 
 # set working directory
-setwd('~/Projects/iliketurtles3/code/power analysis/')
+setwd('~/Projects/multiple_paternity_power_analyses')
 
 # load libraries
 library(dplyr)
 library(parallel)
 
 # source function
-source('nests_to_sample.R')
-source('run_Q2.R')
+source('code/nests_to_sample.R')
+source('code/run_Q2.R')
 
 # load probabilities object
-load('number_of_males.Rdata')
+load('data/number_of_males.Rdata')
 
 # model parameters
 # sample_sizes <- c(32, 96)                     # sample sizes of hatchlings

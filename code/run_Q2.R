@@ -11,8 +11,18 @@ run_Q2 <- function(arguments) {
   pop_size <- 100                               # total population size
   
   # population parameters
-  Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028) # probabilities for mating with 1 - max males    
-  Fprob <- c(22/30, 7/30, 1/30)                 # probabilities for mating with 1 - max females    
+  
+  # polyandry
+  # probabilities for mating with 1 - max males
+  # Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)     
+  Mprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
+  
+  # polygyny
+  # Fprob <- c(22/30, 7/30, 1/30)                 # probabilities for mating with 1 - max females 
+  
+  # no polygyny
+  Fprob <- c(1)
+  
   nests_mu <- 4.95                              # average # of nests per F
   nests_sd <- 2.09                              # sd # of nests per F
   
@@ -35,7 +45,7 @@ run_Q2 <- function(arguments) {
   
   # save output
   save(output, 
-       file = paste(sample_size, '_nests_to_sample_', fertilization_mode, '_', 
-                    nsims, '.Rdata', sep = ''))
+       file = paste('output/', sample_size, '_nests_to_sample_', 
+                    fertilization_mode, '_', nsims, '.Rdata', sep = ''))
   
 }
