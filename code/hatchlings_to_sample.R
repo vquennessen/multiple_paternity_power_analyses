@@ -164,6 +164,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
   #   ggtitle(title)
   
   # which computer am I using???
+  if (computer %in% c('desktop', 'laptop')) {
+  
   if (computer == 'desktop') { comp <- 'Vic' } else if (computer == 'laptop') { comp <- 'vique' }
   
   # save plot
@@ -183,6 +185,27 @@ hatchlings_to_sample <- function(hatchlings_mu,
       width = 200, height = 200)
   grid.table(DFsamples, rows = NULL)
   dev.off()
+  
+  } else {
+    
+    # save plot
+    ggsave(plot = fig1, 
+           filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
+           path = '~/multiple_paternity_power_analyses/figures',
+           width = 6, height = 4)
+    
+    # What's our confidence if we sample 32 percent of the eggs?
+    DFsamples <- DF %>% filter(Sample_size %in% n_sizes)
+    DFsamples2 <- DFsamples %>% spread(Sample_size, Proportion_correct)
+    
+    # save confidence table
+    png(filename = paste('~/multiple_paternity_power_analyses/data/', 
+                         fertilization_mode, '_conf_table.png', sep = ''), 
+        width = 200, height = 200)
+    grid.table(DFsamples, rows = NULL)
+    dev.off()
+    
+  }
   
   output <- list(fig1, DF, DFsamples, DFsamples2)
   

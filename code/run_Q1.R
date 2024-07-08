@@ -1,7 +1,10 @@
 # run power analyses for Q1
 
-# set working directory
-setwd('~/Projects/iliketurtles3/code/power analysis/')
+# # set working directory - desktop
+# setwd('~/Projects/multiple_paternity_power_analyses')
+
+# set working directory - cluster
+setwd('/home/quennessenv/multiple_paternity_power_analyses')
 
 # load libraries
 library(viridis)
@@ -11,7 +14,7 @@ library(tidyr)
 library(gridExtra)
 
 # source function
-source('hatchlings_to_sample.R')
+source('code/hatchlings_to_sample.R')
 
 # function parameters
 hatchlings_mu <- 100.58                  # number of eggs per nest, mean
@@ -20,18 +23,13 @@ max_males <- 5                           # max # of M F can mate with
 n_sims <- 1e6                            # number of simulations to run
 
 n_sizes <- c(32, 96)                     # sample sizes to calculate probs for  
-computer <- 'desktop'                    # computer
+computer <- 'cluster'                    # computer
 fertilization_modes <- c('random',       # fertilization modes
                          'exponential', 
                          'dominant50', 
                          'dominant70', 
                          'dominant90', 
                          'mixed_dominant')
-
-# dimensions
-nf <- length(fertilization_modes)
-nm <- max_males - 1
-ns <- length(n_sizes)
       
 # initialize total dataframe of probabilities
 probs <- data.frame(NULL)               
@@ -55,7 +53,7 @@ for (f in 1:nf) {
   figs[[f]] <- output[[1]]
   
   # append DF to probs
-  probs <- rbind(probs, output[[2]])
+  probs1 <- rbind(probs, output[[2]])
   
   # append DFsamples to probs
   sample_probs <- rbind(probs, output[[3]])
@@ -63,26 +61,25 @@ for (f in 1:nf) {
   # append DFsamples2 to probs
   sample_probs2 <- rbind(probs, output[[4]])
   
+  # spit out progress update
+  print(paste('Done with ', fertilization_modes[f], ' fertilization mode!'))
+  
 }
 
 # save objects into power analyses output folder
 
 # save figures
 save(figs, 
-     file = paste('~/Projects/iliketurtles3/output/power analysis/figures',
-                  n_sims, '.Rdata', sep = ''))
+     file = paste('figures/', n_sims, '.Rdata', sep = ''))
 
 # save table
-save(probs, 
-     file = paste('~/Projects/iliketurtles3/output/power analysis/probabilities',
-                  n_sims, '.Rdata', sep = ''))
+save(probs1, 
+     file = paste('data/probabilities_', n_sims, '.Rdata', sep = ''))
 
 # save table
 save(sample_probs, 
-     file = paste('~/Projects/iliketurtles3/output/power analysis/sample_probabilities',
-                  n_sims, '.Rdata', sep = ''))
+     file = paste('data/sample_probabilities_', n_sims, '.Rdata', sep = ''))
 
 # save table
 save(sample_probs2, 
-     file = paste('~/Projects/iliketurtles3/output/power analysis/sample_probabilities2',
-                  n_sims, '.Rdata', sep = ''))
+     file = paste('data/sample_probabilities2_', n_sims, '.Rdata', sep = ''))
