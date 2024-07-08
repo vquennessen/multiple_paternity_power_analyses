@@ -54,19 +54,35 @@ for (f in 1:nf) {
   # append figure to figs list
   figs[[f]] <- output[[1]]
   
-  # append DFsamples to probs
+  # append DF to probs
   probs <- rbind(probs, output[[2]])
+  
+  # append DFsamples to probs
+  sample_probs <- rbind(probs, output[[3]])
+  
+  # append DFsamples2 to probs
+  sample_probs2 <- rbind(probs, output[[4]])
   
 }
 
 # save objects into power analyses output folder
+
+# save figures
+save(figs, 
+     file = paste('~/Projects/iliketurtles3/output/power analysis/figures',
+                  n_sims, '.Rdata', sep = ''))
 
 # save table
 save(probs, 
      file = paste('~/Projects/iliketurtles3/output/power analysis/probabilities',
                   n_sims, '.Rdata', sep = ''))
 
-# save figures
-save(figs, 
-     file = paste('~/Projects/iliketurtles3/output/power analysis/figures',
+# save table
+save(sample_probs, 
+     file = paste('~/Projects/iliketurtles3/output/power analysis/sample_probabilities',
+                  n_sims, '.Rdata', sep = ''))
+
+# save table
+save(sample_probs2, 
+     file = paste('~/Projects/iliketurtles3/output/power analysis/sample_probabilities2',
                   n_sims, '.Rdata', sep = ''))

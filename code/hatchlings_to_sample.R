@@ -184,8 +184,7 @@ hatchlings_to_sample <- function(hatchlings_mu,
   grid.table(DFsamples, rows = NULL)
   dev.off()
   
-  
-  output <- list(fig1, DFsamples, DFsamples2)
+  output <- list(fig1, DF, DFsamples, DFsamples2)
   
   return(output)
   

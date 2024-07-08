@@ -25,7 +25,12 @@ library(patchwork)
 source('hatchlings_to_sample.R')
 
 # set number of simulations to run
-n_sims <- 100000
+hatchlings_mu <- 100.58
+hatchlings_sd <- 22.61 
+max_males <- 5
+n_sims <- 1e6
+n_sizes <- c(32, 96)
+computer <- 'laptop'
 ```
 
 ## Question 1: How many hatchlings should be sampled from a nest to robustly estimate the number of males that contributed to it?
@@ -78,13 +83,13 @@ For each nest, males could fertilize eggs in different ways:
 source('hatchlings_to_sample.R')
 
 # generate output
-output1 <- hatchlings_to_sample(n_hatchlings = 100, 
-                               max_hatchlings = 96, 
-                               max_males = 7,
-                               breeding = 'random', 
-                               n_sims = n_sims, 
-                               dom = NULL, 
-                               n_sizes = c(32, 96))
+output1 <- hatchlings_to_sample(hatchlings_mu,
+                                hatchlings_sd,     
+                                max_males,          
+                                fertilization_mode, 
+                                n_sims,             
+                                n_sizes,              
+                                computer)
 
 # figure
 A <- output1[[1]]
