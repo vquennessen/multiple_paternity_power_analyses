@@ -24,8 +24,8 @@ fmodes <- c('random',
 
 # fertilization mode titles
 fmode_titles <- c('Random', # 'Exponential', 
-                  # 'Dominant 50', 'Dominant 70', 
-                  # 'Mixed Dominant',
+                  # 'Dominant 50', 'Dominant 70', 'Dominant 90',
+                  # 'Mixed Dominant')
                   'Dominant 90')
 
 # sample sizes
@@ -51,7 +51,7 @@ for (f in 1:length(fmodes)) {
     sample_size <- sample_sizes[s]
     
     # load data
-    load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
+    load(paste('~/Projects/multiple_paternity_power_analyses/output/uniform_Mprob_and_Fprob/', 
                sample_size, '_nests_to_sample_', fmode, '_', nsims, '.Rdata', 
                sep = ''))
     DF1 <- output
@@ -106,7 +106,7 @@ fig4
 
 # save heatmap
 ggsave(fig4,
-       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Fprobs.png',
+       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
        height = 6, width = 12)
 
 # # dimensions
