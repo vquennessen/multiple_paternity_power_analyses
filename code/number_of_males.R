@@ -5,21 +5,21 @@
 #' sample size, and fertilization mode. 
 #'
 #' @param hatchlings_mu numeric value, the mean number of hatchlings produced in
-#' a nest. Default value is 100.58. 
+#'    a nest. Default value is 100.58. 
 #' @param hatchlings_sd numeric value, the standard deviation of the number of 
-#' hatchlings produced in a nest. Default value is 22.61. 
+#'    hatchlings produced in a nest. Default value is 22.61. 
 #' @param max_males integer value, the maximum number of males that females can 
-#' mate with. Default value is 5. 
+#'    mate with. Default value is 5. 
 #' @param n_sims integer value, the number of simulations to run. Default value 
-#' is 1e6. 
+#'    is 1e6. 
 #' @param n_sizes vector of integer values, the sample size(s) to collect. 
-#' Default value is c(32, 96). 
+#'    Default value is c(32, 96). 
 #' @param fertilization_modes vector of character values, the different modes of
-#' fertilization to analyse. Default value is c('random', 'exponential', 
-#' 'dominant50', 'dominant70', 'dominant90', 'mixed_dominant'). 
+#'    fertilization to analyse. Default value is c('random', 'exponential', 
+#'    'dominant50', 'dominant70', 'dominant90', 'mixed_dominant'). 
 #' @param min_nest_size integer value, the number of hatchlings to be assigned 
-#' to a nest where 0 or fewer was returned from the normal distribution based on 
-#' hatchlings_mu and hatchlings_sd. 
+#'    to a nest where 0 or fewer was returned from the normal distribution based 
+#'    on hatchlings_mu and hatchlings_sd. 
 #'
 #' @return saves object where probabilities of identifying 
 #' @export
@@ -41,7 +41,7 @@ number_of_males <- function(hatchlings_mu = 100.58,
                                                     'dominant90', 'mixed_dominant'), 
                             min_nest_size = 10) 
   
-  {
+{
   
   ###### Error handling ########################################################
   
@@ -51,7 +51,8 @@ number_of_males <- function(hatchlings_mu = 100.58,
   if (max_males %% 1 != 0) {stop('max_males must be an integer value.')}
   if (n_sims %% 1 != 0) {stop('n_sims must be an integer value.')}
   if (n_sizes %% 1 != 0) {stop('n_sizes must be an integer value.')}
-  if (!is.character(fertilization_modes)) {stop('fertilization_modes must be a character vector.')}
+  if (!is.character(fertilization_modes)) 
+    {stop('fertilization_modes must be a character vector.')}
   if (min_nest_size %% 1 != 0) {stop('min_nest_size must be an integer value.')}
   
   # acceptable values
@@ -70,7 +71,7 @@ number_of_males <- function(hatchlings_mu = 100.58,
   
   # relational values
   if(min_nest_size > (hatchlings_mu - 3*hatchlings_sd)) 
-    {stop('min_nest_size is too large given the distribution of hatchlings per nest.')}
+  {stop('min_nest_size is too large given the distribution of hatchlings per nest.')}
   
   ##############################################################################
   
