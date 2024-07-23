@@ -1,21 +1,74 @@
-### function for number of eggs to sample to determine the number of sires
-
+#' hatchlings_to_sample
+#'
+#' \code{hatchlings_to_sample}  samples hatchlings from nests to determine the
+#'    confidence of identifying all of the males that contributed for 
+#'    populations that exhibit multiple paternity. 
+#'
+#' @param hatchlings_mu numeric value, the mean number of hatchlings produced in
+#'    a nest. Default value is 100.58. 
+#' @param hatchlings_sd numeric value, the standard deviation of the number of 
+#'    hatchlings produced in a nest. Default value is 22.61. 
+#' @param max_males integer value, the maximum number of males that females can 
+#'    mate with. Default value is 5. 
+#' @param n_sims integer value, the number of simulations to run. Default value 
+#'    is 1e6. 
+#' @param n_sizes vector of integer values, the sample size(s) to collect. 
+#'    Default value is c(32, 96). 
+#' @param fertilization_mode a character value defining the distribution of 
+#'    male contributions to fertilizing a single nest. Potential values 
+#'    include random', 'exponential', dominant50', 'dominant70', 
+#'    'dominant90', 'mixed_dominant'). 
+#'
+#' @return creates and saves figures to plot confidence of identifying all males
+#'    given different numbers of contributing males and sample sizes. Creates 
+#'    and saves table of confidences for sample sizes of n_sizes specifically.
+#' @export
+#'
+#' @examples
+#' hatchlings_to_sample(hatchlings_mu = 100.58, hatchlings_sd = 22.61, 
+#'                      max_males = 5, n_sims = 1e5, n_sizes = c(32, 96), 
+#'                      fertilization_mode = 'random')
+#' 
 hatchlings_to_sample <- function(hatchlings_mu,
                                  hatchlings_sd,      # number of eggs per nest
                                  max_males,          # max # of M F can mate with
-                                 fertilization_mode, # fertilization mode
                                  n_sims,             # number of simulations to run
                                  n_sizes,            # sample sizes to run  
-                                 computer)           # which computer is this running on    
+                                 fertilization_mode) # fertilization mode
+
 {
+  
+  ###### Error handling ########################################################
+  
+  # classes of variables
+  if (!is.numeric(hatchlings_mu)) {stop('hatchlings_mu must be a numeric value.')}
+  if (!is.numeric(hatchlings_sd)) {stop('hatchlings_sd must be a numeric value.')}
+  if (max_males %% 1 != 0) {stop('max_males must be an integer value.')}
+  if (n_sims %% 1 != 0) {stop('n_sims must be an integer value.')}
+  if (n_sizes %% 1 != 0) {stop('n_sizes must be an integer value.')}
+  if (!is.character(fertilization_modes)) 
+  {stop('fertilization_modes must be a character.')}
+
+  # acceptable values
+  if (hatchlings_mu <= 0) {stop('hatchlings_mu must be greater than 0.')}
+  if (hatchlings_sd <= 0) {stop('hatchlings_sd must be greater than 0.')}
+  if (max_males < 2) {stop('max_males must be greater than 1.')}
+  if (n_sims <= 0) {stop('n_sims must be greater than 0.')}
+  if (n_sizes <= 0) {stop('n_sizes must be greater than 0.')}
+  if (n_sizes > 96) {stop('n_sizes must be less than 97.')}
+  if (!(fertilization_mode) %in% c('random', 'exponential', 'dominant50', 
+                                     'dominant70', 'dominant90', 
+                                     'mixed_dominant')) 
+  {stop('fertilization_mode given is not recognized')}
+  
+  ##############################################################################
+  
   
   # pre-allocate data frame
   DF <- data.frame(Fertilization_mode = fertilization_mode,
                    Males = rep(2:max_males, each = max(n_sizes)), 
                    Sample_size = rep(c(1:max(n_sizes)), times = (max_males - 1)), 
                    Proportion_correct = rep(NA, dim = (max_males - 1)*(max(n_sizes) - 1))) 
-  # Avg_detected = rep(NA, dim = max_males*(max_hatchlings - 1)))
-  
   
   # for each number of males that contribute to a nest:
   for (i in 2:max_males) {
@@ -52,17 +105,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
       M2 <- matrix(rep((1 - doms) / (i - 1), i - 1), nrow = n_sims, ncol = i - 1)
       probs <- cbind(M1, M2)
       title <- 'Mixed dominant fertilization mode'
-
+      
     }
-    
-    # } else if (breeding == 'flexible_dominant') {
-    #   contributions <- list(c(0.8868, 0.1132), 
-    #                         c(0.4744, 0.3241, 0.2015), 
-    #                         c(0.5485, 0.2508, 0.1509, 0.0499), 
-    #                         c(0.4744, 0.1982, 0.1523, 0.0997, 0.0755))
-    #   title <- 'D. Flexible dominant fertilization mode \n based on Alfaro-Nunez et al., 2015'
-    #   
-    # }
     
     # proportion_correct array
     prop_correct <- rep(NA, n_sims)
@@ -82,14 +126,6 @@ hatchlings_to_sample <- function(hatchlings_mu,
       n_hatchlings[which(n_hatchlings <= 0)] <- 10
       
       for (k in 1:n_sims) {
-        
-        # simulate male contributions to nest
-        # if (breeding != 'flexible_dominant') {
-        #   nest <- sample(x = 1:i, 
-        #                  size = n_hatchlings[k], 
-        #                  replace = TRUE,
-        #                  prob = contributions)
-        # } else {
         
         # if mixed dominant, extract contributions
         if (fertilization_mode == 'mixed_dominant') { contributions <- probs[k, ]}
@@ -150,29 +186,10 @@ hatchlings_to_sample <- function(hatchlings_mu,
     geom_vline(xintercept = c(n_sizes), linetype = 3) +
     ggtitle(title)
   
-  # 
-  # # plot results - average estimate (over or underestimated?)
-  # fig2 <- ggplot(DF, aes(x = Sample_size, y = Avg_detected/Males, 
-  #                        col = as.factor(Males))) +
-  #   geom_hline(yintercept = 1, linetype = 2) +
-  #   geom_path(lwd = 1.25) +
-  #   labs(col = 'Number \n of Males') +
-  #   scale_color_manual(values = colors) +
-  #   ylab('Number of Males Detected Relative to Correct Value') +
-  #   xlab('Hatchlings Sampled') +
-  #   geom_vline(xintercept = c(n_sizes), linetype = 3) +
-  #   ggtitle(title)
-  
-  # which computer am I using???
-  if (computer %in% c('desktop', 'laptop')) {
-  
-  if (computer == 'desktop') { comp <- 'Vic' } else if (computer == 'laptop') { comp <- 'vique' }
-  
   # save plot
   ggsave(plot = fig1, 
          filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
-         path = paste('C://Users/', comp, '/Documents/Projects/iliketurtles3/figures/power analyses', 
-                      sep = ''),
+         path = paste('~/multiple_paternity_power_analyses/figures', sep = ''),
          width = 6, height = 4)
   
   # What's our confidence if we sample 32 percent of the eggs?
@@ -180,35 +197,35 @@ hatchlings_to_sample <- function(hatchlings_mu,
   DFsamples2 <- DFsamples %>% spread(Sample_size, Proportion_correct)
   
   # save confidence table
-  png(filename = paste('C://Users/', comp, '/Documents/Projects/iliketurtles3/figures/power analyses/', 
+  png(filename = paste('~/multiple_paternity_power_analyses/', 
                        fertilization_mode, '_conf_table.png', sep = ''), 
       width = 200, height = 200)
   grid.table(DFsamples, rows = NULL)
   dev.off()
   
-  } else {
-    
-    # save plot
-    ggsave(plot = fig1, 
-           filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
-           path = '~/multiple_paternity_power_analyses/figures',
-           width = 6, height = 4)
-    
-    # What's our confidence if we sample 32 percent of the eggs?
-    DFsamples <- DF %>% filter(Sample_size %in% n_sizes)
-    DFsamples2 <- DFsamples %>% spread(Sample_size, Proportion_correct)
-    
-    # save confidence table
-    png(filename = paste('~/multiple_paternity_power_analyses/data/', 
-                         fertilization_mode, '_conf_table.png', sep = ''), 
-        width = 200, height = 200)
-    grid.table(DFsamples, rows = NULL)
-    dev.off()
-    
-  }
+} else {
   
-  output <- list(fig1, DF, DFsamples, DFsamples2)
+  # save plot
+  ggsave(plot = fig1, 
+         filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
+         path = '~/multiple_paternity_power_analyses/figures',
+         width = 6, height = 4)
   
-  return(output)
+  # What's our confidence if we sample 32 percent of the eggs?
+  DFsamples <- DF %>% filter(Sample_size %in% n_sizes)
+  DFsamples2 <- DFsamples %>% spread(Sample_size, Proportion_correct)
   
+  # save confidence table
+  png(filename = paste('~/multiple_paternity_power_analyses/data/', 
+                       fertilization_mode, '_conf_table.png', sep = ''), 
+      width = 200, height = 200)
+  grid.table(DFsamples, rows = NULL)
+  dev.off()
+  
+}
+
+output <- list(fig1, DF, DFsamples, DFsamples2)
+
+return(output)
+
 }
