@@ -35,7 +35,7 @@ hatchlings_to_sample <- function(hatchlings_mu,
                                  n_sims,             # number of simulations to run
                                  n_sizes,            # sample sizes to run  
                                  fertilization_mode) # fertilization mode
-
+  
 {
   
   ###### Error handling ########################################################
@@ -48,7 +48,7 @@ hatchlings_to_sample <- function(hatchlings_mu,
   if (n_sizes %% 1 != 0) {stop('n_sizes must be an integer value.')}
   if (!is.character(fertilization_modes)) 
   {stop('fertilization_modes must be a character.')}
-
+  
   # acceptable values
   if (hatchlings_mu <= 0) {stop('hatchlings_mu must be greater than 0.')}
   if (hatchlings_sd <= 0) {stop('hatchlings_sd must be greater than 0.')}
@@ -57,8 +57,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
   if (n_sizes <= 0) {stop('n_sizes must be greater than 0.')}
   if (n_sizes > 96) {stop('n_sizes must be less than 97.')}
   if (!(fertilization_mode) %in% c('random', 'exponential', 'dominant50', 
-                                     'dominant70', 'dominant90', 
-                                     'mixed_dominant')) 
+                                   'dominant70', 'dominant90', 
+                                   'mixed_dominant')) 
   {stop('fertilization_mode given is not recognized')}
   
   ##############################################################################
@@ -203,8 +203,6 @@ hatchlings_to_sample <- function(hatchlings_mu,
   grid.table(DFsamples, rows = NULL)
   dev.off()
   
-} else {
-  
   # save plot
   ggsave(plot = fig1, 
          filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
@@ -222,10 +220,9 @@ hatchlings_to_sample <- function(hatchlings_mu,
   grid.table(DFsamples, rows = NULL)
   dev.off()
   
-}
-
-output <- list(fig1, DF, DFsamples, DFsamples2)
-
-return(output)
-
+  # what will the code produce
+  output <- list(fig1, DF, DFsamples, DFsamples2)
+  
+  return(output)
+  
 }
