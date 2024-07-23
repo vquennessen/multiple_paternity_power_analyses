@@ -1,10 +1,42 @@
 # function to determine our confidence in OSR estimate given how many nests we 
 # sample to robustly estimate the OSR for that year
 
-nests_to_sample <- function(nsims,            # number of simulations
-                            pop_size,         # total population size
-                            sample_size,
-                            fertilization_mode,
+#' nests_to_sample
+#' 
+#' \code{nests_to_sample} Samples nests across a whole breeding season to 
+#'    determine if all of the males that contributed were identified. 
+#'
+#' @param n_sims integer value, the number of simulations to run. Default value 
+#'    is 1e6.
+#' @param pop_size integer value, the population size of all breeding adults. 
+#'    Default value is 100.
+#' @param sample_size integer value, the sample size to collect. Default value 
+#'    is 32. .
+#' @param fertilization_mode a character value defining the distribution of 
+#'    male contributions to fertilizing a single nest. Potential values 
+#'    include random', 'exponential', dominant50', 'dominant70', 
+#'    'dominant90', 'mixed_dominant'). Default value is 'random'.
+#' @param Mprob a numeric vector, the probabilities of females mating with 1+ 
+#'    males. 
+#' @param Fprob a numeric vector, the probabilities of males mating with 1+ 
+#'    females.
+#' @param nests_mu an integer value, the mean number of nests a female lays in 
+#'    one nesting season. Default value is 4.95. 
+#' @param nests_sd an integer value, the standard deviation of the number of 
+#'    nests a female lays in one nesting season. Default value is 2.09. 
+#' @param id_probs a dataframe with columns "Fertilization Mode", 
+#'    "Males" (number of contributing males), "Sample Size" (1 - 96), 
+#'    "Proportion Correct" (how many simulations correctly identified all males), 
+#'    and "Marginal" (the marginal fertilization contributions of the last male). 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+nests_to_sample <- function(nsims = 1e6,            
+                            pop_size = 100,        
+                            sample_size = 32,
+                            fertilization_mode = 'random',
                             Mprob,            # probs for mating with 1 - max M    
                             Fprob,            # probs for mating with 1 - max F   
                             nests_mu,         # average # of nests per F
