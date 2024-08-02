@@ -70,14 +70,11 @@ for (f in 1:length(fmodes)) {
   
 }
 
-# DF$Fertilization_Mode <- factor(DF$Fertilization_Mode)
+# change 32 and 96 in DF to sample size 32 and sample size 96
+DF$Sample_Label[DF$Sample_Size == 32] <- 'Sample Size 32'
+DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample Size 96'
 
-# make fertilization mode a factor
-# DF$Fertilization_Mode <- factor(DF$Fertilization_Mode, 
-#                                 levels = fmodes, 
-#                                 labels = fmode_titles)
-
-# heatmaps
+##### heatmap #################################################################
 fig4 <- ggplot(data = DF, aes(x = PropNests, y = OSR, fill = Proportion)) +
   geom_tile(color = 'white',
             lwd = 1.5,
@@ -109,44 +106,29 @@ ggsave(fig4,
        file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
        height = 6, width = 12)
 
-# # dimensions
-# nBSR <- n_distinct(DF1$BSR)
-# nPN <- n_distinct(DF1$PropNests)
+##### contour plot #############################################################
+fig5 <- ggplot(data = DF, aes(x = PropNests, 
+                              y = OSR, 
+                              z = Proportion)) +
+  geom_contour_filled() +
+  xlab('Proportion of clutches sampled') +
+  ylab('Operational Sex Ratio') +
+  labs(fill = 'Confidence') +
+  guides(fill = guide_legend(reverse = TRUE)) + 
+  theme(text = element_text(size = 25)) +
+  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size)) +
+  theme(panel.spacing.x = unit(1.5, "lines")) +
+  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
 
-################################################################################
+ggplot(DF, aes(PropNests, OSR, z = Proportion)) +
+  geom_contour_filled()
 
+fig4
 
-################################################################################
+# save heatmap
+ggsave(fig4,
+       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
+       height = 6, width = 12)
 
-# # sample size 96 heatmap
-# fig96 <- ggplot(data = DF96, aes(x = PropNests, y = BSR, fill = Proportion)) +
-#   geom_tile(color = 'white',
-#             lwd = 1.5,
-#             linetype = 1) +
-#   scale_fill_gradient2(low = hcl.colors(n = 5)[1],
-#                        mid = hcl.colors(n = 5)[3],
-#                        high = hcl.colors(n = 5)[5],
-#                        midpoint = 0.5,
-#                        breaks = c(0, 0.25, 0.5, 0.75, 1),
-#                        limits = c(0, 1),
-#                        na.value = 'gray') +
-#   xlab('Proportion of Nests Sampled') +
-#   ylab('Breeding Sex Ratio') +
-#   labs(fill = 'Proportion \n') +
-#   # geom_text(aes(label = round(Proportion, 2))) +
-#   ggtitle('b. Sample size 96') +
-#   theme(text = element_text(size = 15))
-
-# # save heatmap
-# ggsave(fig96, 
-#        file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/96_mixed_dominant.pdf', 
-#        height = 4, width = 6)
-
-# # put heatmaps together
-# A <- fig32 + theme(legend.position = 'none')
-# B <- fig96 + ylab('') + theme(axis.text.y = element_blank())
-# 
-# patchwork <- A + B + 
-#   xlab('Proportion of Nests Sampled') +
-#   ggtitle(fmode)
-# patchwork
