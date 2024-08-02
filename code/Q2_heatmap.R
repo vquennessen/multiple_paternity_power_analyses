@@ -116,19 +116,16 @@ fig5 <- ggplot(data = DF, aes(x = PropNests,
   labs(fill = 'Confidence') +
   guides(fill = guide_legend(reverse = TRUE)) + 
   theme(text = element_text(size = 25)) +
-  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size)) +
+  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Label)) +
   theme(panel.spacing.x = unit(1.5, "lines")) +
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
 
-ggplot(DF, aes(PropNests, OSR, z = Proportion)) +
-  geom_contour_filled()
-
-fig4
+fig5
 
 # save heatmap
-ggsave(fig4,
-       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
+ggsave(fig5,
+       file = 'C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs_contour.png',
        height = 6, width = 12)
 
