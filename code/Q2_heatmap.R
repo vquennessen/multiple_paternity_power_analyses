@@ -110,12 +110,15 @@ ggsave(fig4,
 fig5 <- ggplot(data = DF, aes(x = PropNests, 
                               y = OSR, 
                               z = Proportion)) +
-  geom_contour_filled() +
+  geom_contour_filled(bins = 5) +
   xlab('Proportion of clutches sampled') +
   ylab('Operational Sex Ratio') +
   labs(fill = 'Confidence') +
   guides(fill = guide_legend(reverse = TRUE)) + 
-  theme(text = element_text(size = 25)) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank()) +
+  theme(text = element_text(size = 25), 
+        axis.text = element_text(size = 15)) +
   facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Label)) +
   theme(panel.spacing.x = unit(1.5, "lines")) +
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
@@ -124,7 +127,7 @@ fig5 <- ggplot(data = DF, aes(x = PropNests,
 
 fig5
 
-# save heatmap
+# save contour plot
 ggsave(fig5,
        file = 'C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs_contour.png',
        height = 6, width = 12)
