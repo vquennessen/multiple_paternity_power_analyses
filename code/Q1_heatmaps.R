@@ -1,14 +1,14 @@
 #Q1 heatmap
 
 # set working directory
-setwd('~/Projects/iliketurtles3/code/')
+setwd('~/Projects/multiple_paternity_power_analyses/code/')
 
 # load libraries
 library(viridis)
 library(tidyverse)
 
 # load probability dataframe
-load("~/Projects/iliketurtles3/output/power analysis/probabilities1e+06.Rdata")
+load("~/Projects/multiple_paternity_power_analyses/output/probabilities1e+06.Rdata")
 # output called 'probs'
 
 # undo spread from hatchlings_to_sample.R
@@ -45,7 +45,7 @@ figure2 <- ggplot(data = DF32, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Fertilization mode') +
+  ylab('Paternity mode') +
   ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   
@@ -206,7 +206,7 @@ figure2 <- ggplot(data = DF32, aes(x = Males,
   theme(text = element_text(size = 15))
 
 ggsave(figure2, 
-     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure2.png", 
+     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
      height = 6, width = 8)
 
 # start heatmap for sample size 96
@@ -225,7 +225,7 @@ figure3 <- ggplot(data = DF96, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Fertilization mode') +
+  ylab('Paternity mode') +
   ggtitle('Proportion correct with sample size 96 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   
@@ -386,6 +386,6 @@ figure3 <- ggplot(data = DF96, aes(x = Males,
   theme(text = element_text(size = 15))
 
 ggsave(figure3, 
-       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure3.png", 
+       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
        height = 6, width = 8)
 
