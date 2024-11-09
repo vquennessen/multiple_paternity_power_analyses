@@ -1,14 +1,14 @@
 #Q1 heatmap
 
 # set working directory
-setwd('~/Projects/iliketurtles3/code/')
+setwd('~/Projects/multiple_paternity_power_analyses/code/')
 
 # load libraries
 library(viridis)
 library(tidyverse)
 
 # load probability dataframe
-load("~/Projects/iliketurtles3/output/power analysis/probabilities1e+06.Rdata")
+load("~/Projects/multiple_paternity_power_analyses/output/probabilities1e+06.Rdata")
 # output called 'probs'
 
 # undo spread from hatchlings_to_sample.R
@@ -20,8 +20,8 @@ probs$Males <- as.factor(probs$Males)
 probs$Fertilization_mode <- factor(probs$Fertilization_mode, 
                                    levels = c('mixed_dominant', 'dominant90', 'dominant70',
                                               'dominant50', 'exponential', 'random'),
-                                   labels = c('Mixed Dominant', 'Dominant (90%)', 'Dominant (70%)', 
-                                              'Dominant (50%)', 'Exponential', 'Random'))
+                                   labels = c('Mixed Dominant', 'Dominant 90', 'Dominant 70', 
+                                              'Dominant 50', 'Exponential', 'Random'))
 probs$Sample_Size <- as.factor(probs$Sample_size)
 probs$Sample_Size <- as.factor(probs$Sample_size)
 
@@ -30,7 +30,7 @@ DF32 <- subset(probs, Sample_size == 32)
 DF96 <- subset(probs, Sample_size == 96)
 
 # start heatmap for sample size 32
-figure2 <- ggplot(data = DF32, aes(x = Males, 
+fig3 <- ggplot(data = DF32, aes(x = Males, 
                                    y = Fertilization_mode, 
                                    fill = Proportion_correct)) +
   geom_tile(color = 'white',
@@ -45,9 +45,16 @@ figure2 <- ggplot(data = DF32, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Fertilization mode') +
-  ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
+  ylab('Paternity mode') +
+  # ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank()) +
+  theme(text = element_text(size = 25), 
+        axis.text = element_text(size = 15)) +
+  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
   
   # random
   annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black') +
@@ -118,7 +125,7 @@ figure2 <- ggplot(data = DF32, aes(x = Males,
   annotate("segment", x = 3.645, xend = 4.5, y = 3.75, yend = 3.75, colour = "white", 
            lwd = 3) +
   
-  # dominant 70%
+  # dominant 70
   annotate(geom = 'text', x = 1, y = 3.1, label = '1.000', colour = 'black') +
   annotate(geom = 'text', x = 2, y = 3.1, label = '0.989', colour = 'black') +
   annotate(geom = 'text', x = 3, y = 3.1, label = '0.900', colour = 'black') +
@@ -201,16 +208,14 @@ figure2 <- ggplot(data = DF32, aes(x = Males,
   annotate("segment", x = 3.595, xend = 3.645, y = 0.75, yend = 0.75, colour = "lightgrey", 
            lwd = 3) +
   annotate("segment", x = 3.645, xend = 4.5, y = 0.75, yend = 0.75, colour = "white", 
-           lwd = 3) +
-  
-  theme(text = element_text(size = 15))
+           lwd = 3) 
 
-ggsave(figure2, 
-     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure2.png", 
-     height = 6, width = 8)
+ggsave(fig3, 
+     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
+     height = 6, width = 12)
 
 # start heatmap for sample size 96
-figure3 <- ggplot(data = DF96, aes(x = Males, 
+fig4 <- ggplot(data = DF96, aes(x = Males, 
                                    y = Fertilization_mode, 
                                    fill = Proportion_correct)) +
   geom_tile(color = 'white',
@@ -225,9 +230,16 @@ figure3 <- ggplot(data = DF96, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Fertilization mode') +
-  ggtitle('Proportion correct with sample size 96 \n and marginal contributions') +
+  ylab('Paternity mode') +
   theme(panel.background = element_blank()) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank()) +
+  theme(text = element_text(size = 25), 
+        axis.text = element_text(size = 15)) +
+  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+  # ggtitle('Proportion correct with sample size 96 \n and marginal contributions') +
   
   # random
   annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black') +
@@ -381,11 +393,9 @@ figure3 <- ggplot(data = DF96, aes(x = Males,
   annotate("segment", x = 3.595, xend = 3.645, y = 0.75, yend = 0.75, colour = "lightgrey", 
            lwd = 3) +
   annotate("segment", x = 3.645, xend = 4.5, y = 0.75, yend = 0.75, colour = "white", 
-           lwd = 3) +
-  
-  theme(text = element_text(size = 15))
+           lwd = 3) 
 
-ggsave(figure3, 
-       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure3.png", 
-       height = 6, width = 8)
+ggsave(fig4, 
+       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
+       height = 6, width = 12)
 

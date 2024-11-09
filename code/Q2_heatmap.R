@@ -28,6 +28,12 @@ fmode_titles <- c('Random', # 'Exponential',
                   # 'Mixed Dominant')
                   'Dominant 90')
 
+# figure number
+fig <- 'fig5'
+
+# data title
+data_title <- 'no_polygyny'
+
 # sample sizes
 sample_sizes <- c(32, 96)
 
@@ -51,9 +57,9 @@ for (f in 1:length(fmodes)) {
     sample_size <- sample_sizes[s]
     
     # load data
-    load(paste('~/Projects/multiple_paternity_power_analyses/output/uniform_Mprob_and_Fprob/', 
-               sample_size, '_nests_to_sample_', fmode, '_', nsims, '.Rdata', 
-               sep = ''))
+    load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
+               data_title, '/', sample_size, '_nests_to_sample_', fmode, '_', 
+               nsims, '.Rdata', sep = ''))
     DF1 <- output
     
     # fertilization mode and sample size vectors
@@ -75,39 +81,43 @@ DF$Sample_Label[DF$Sample_Size == 32] <- 'Sample Size 32'
 DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample Size 96'
 
 ##### heatmap #################################################################
-fig4 <- ggplot(data = DF, aes(x = PropNests, y = OSR, fill = Proportion)) +
-  geom_tile(color = 'white',
-            lwd = 1.5,
-            linetype = 1) +
-  scale_fill_gradient2(low = hcl.colors(n = 5)[1],
-                       mid = hcl.colors(n = 5)[3],
-                       high = hcl.colors(n = 5)[5],
-                       midpoint = 0.5,
-                       breaks = c(0, 0.25, 0.5, 0.75, 1),
-                       limits = c(0, 1),
-                       na.value = 'gray') +
-  xlab('Proportion of Nests Sampled') +
-  ylab('Operational Sex Ratio') +
-  labs(fill = 'Proportion \n') +
-  # geom_text(aes(label = round(Proportion, 2))) +
-  theme(text = element_text(size = 25)) +
-  facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size)) +
-  theme(panel.spacing.x=unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
-
-
-
-fig4
-
-# save heatmap
-ggsave(fig4,
-       file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
-       height = 6, width = 12)
+# fig4 <- ggplot(data = DF, aes(x = PropNests, y = OSR, fill = Proportion)) +
+#   geom_tile(color = 'white',
+#             lwd = 1.5,
+#             linetype = 1) +
+#   scale_fill_gradient2(low = hcl.colors(n = 5)[1],
+#                        mid = hcl.colors(n = 5)[3],
+#                        high = hcl.colors(n = 5)[5],
+#                        midpoint = 0.5,
+#                        breaks = c(0, 0.25, 0.5, 0.75, 1),
+#                        limits = c(0, 1),
+#                        na.value = 'gray') +
+#   xlab('Proportion of Nests Sampled') +
+#   ylab('Operational Sex Ratio') +
+#   labs(fill = 'Proportion \n') +
+#   # geom_text(aes(label = round(Proportion, 2))) +
+#   theme(text = element_text(size = 25)) +
+#   facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Size)) +
+#   theme(panel.spacing.x=unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
+# 
+# 
+# 
+# fig4
+# 
+# # save heatmap
+# ggsave(fig4,
+#        file = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs.png',
+#        height = 6, width = 12)
 
 ##### contour plot #############################################################
-fig5 <- ggplot(data = DF, aes(x = PropNests, 
+
+# add facet labels as 'label' in DF
+DF$label <- rep(c('A', 'B', 'C', 'D'), each = 200)
+
+fig2 <- ggplot(data = DF, aes(x = PropNests, 
                               y = OSR, 
                               z = Proportion)) +
   geom_contour_filled(bins = 5) +
@@ -119,16 +129,22 @@ fig5 <- ggplot(data = DF, aes(x = PropNests,
   theme(panel.grid.minor = element_blank()) +
   theme(text = element_text(size = 25), 
         axis.text = element_text(size = 15)) +
+  geom_text(aes(x = 0.125, y = 0.45, 
+                label = label, 
+                group = label), 
+            size = 5, colour = 'white',
+            inherit.aes = FALSE) +
   facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Label)) +
   theme(panel.spacing.x = unit(1.5, "lines")) +
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm"))
 
-fig5
+fig2
 
 # save contour plot
-ggsave(fig5,
-       file = 'C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4_even_Mprobs_Fprobs_contour.png',
+ggsave(fig2,
+       file = paste('C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/', 
+       fig, '_', data_title, '.png', sep = ''), 
        height = 6, width = 12)
 
