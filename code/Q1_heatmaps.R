@@ -45,7 +45,7 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Paternity mode') +
+  ylab('Paternity contribution mode') +
   # ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
@@ -211,7 +211,7 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig3, 
-     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
+     file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
      height = 6, width = 12)
 
 # start heatmap for sample size 96
@@ -230,7 +230,7 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
                        na.value = 'gray') +
   guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
   xlab('Number of males') +
-  ylab('Paternity mode') +
+  ylab('Paternity contribution mode') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
@@ -396,6 +396,6 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig4, 
-       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
+       file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
        height = 6, width = 12)
 
