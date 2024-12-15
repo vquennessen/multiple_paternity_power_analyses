@@ -43,9 +43,15 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
+<<<<<<< HEAD
   guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
   xlab('Number of fathers') +
   ylab('Paternal contribution mode') +
+=======
+  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
+  xlab('Number of males') +
+  ylab('Paternity contribution mode') +
+>>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
   # ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
@@ -212,6 +218,7 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
 
 ggsave(fig3, 
      file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
+     file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
      height = 6, width = 12)
 
 # start heatmap for sample size 96
@@ -228,9 +235,15 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
+<<<<<<< HEAD
   guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
   xlab('Number of fathers') +
   ylab('Paternal contribution mode') +
+=======
+  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
+  xlab('Number of males') +
+  ylab('Paternity contribution mode') +
+>>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
@@ -396,6 +409,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig4, 
+<<<<<<< HEAD
        file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figS1.png", 
+=======
+       file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
+>>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
        height = 6, width = 12)
 
