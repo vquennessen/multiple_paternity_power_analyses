@@ -20,10 +20,10 @@ run_Q2 <- function(arguments) {
   # polygyny
   # probabilities for mating with 1 - max females
   # Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)     
-  Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)     
+  # Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)     
   
   # no polygyny
-  # Fprob <- c(1)
+  Fprob <- c(1)
   
   nests_mu <- 4.95                              # average # of nests per F
   nests_sd <- 2.09                              # sd # of nests per F
@@ -47,7 +47,7 @@ run_Q2 <- function(arguments) {
   
   # save output
   save(output, 
-       file = paste('output/', sample_size, '_nests_to_sample_', 
+       file = paste('output/uniform_Mprob_no_polygyny/', sample_size, '_nests_to_sample_', 
                     fertilization_mode, '_', nsims, '.Rdata', sep = ''))
   
 }

@@ -9,3 +9,12 @@
 2024-07-03 15:50:21 - sample size 32 - random - 100 sims - 80% done!
 2024-07-03 15:50:28 - sample size 32 - random - 100 sims - 90% done!
 2024-07-03 15:50:36 - sample size 32 - random - 100 sims - 100% done!
+2024-12-13 20:44:30 - sample size 32 - random - 1e+05 sims
+2024-12-13 20:47:47 - sample size 32 - random - 1e+05 sims
+2024-12-13 20:48:34 - sample size 32 - random - 1e+05 sims
+2024-12-13 20:49:32 - sample size 32 - random - 1e+05 sims
+2024-12-13 20:57:11 - sample size 32 - random - 1e+05 sims
+2024-12-13 20:58:34 - sample size 32 - random - 1e+05 sims
+2024-12-13 21:00:53 - sample size 32 - random - 1000 sims
+2024-12-13 21:01:09 - sample size 32 - random - 1000 sims - 10% done!
+2024-12-13 21:01:24 - sample size 32 - random - 1e+06 sims
