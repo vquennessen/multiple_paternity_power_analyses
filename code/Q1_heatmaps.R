@@ -217,7 +217,6 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig3, 
-     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
      file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
      height = 6, width = 12)
 
