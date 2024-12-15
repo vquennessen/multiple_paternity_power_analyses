@@ -29,7 +29,7 @@ fmode_titles <- c('Random', # 'Exponential',
                   'Dominant 90')
 
 # figure number
-fig <- 'fig5'
+fig <- 'fig4'
 
 # data title
 data_title <- 'no_polygyny'
@@ -77,8 +77,8 @@ for (f in 1:length(fmodes)) {
 }
 
 # change 32 and 96 in DF to sample size 32 and sample size 96
-DF$Sample_Label[DF$Sample_Size == 32] <- 'Sample Size 32'
-DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample Size 96'
+DF$Sample_Label[DF$Sample_Size == 32] <- 'Sample size 32'
+DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample size 96'
 
 ##### heatmap #################################################################
 # fig4 <- ggplot(data = DF, aes(x = PropNests, y = OSR, fill = Proportion)) +
@@ -115,19 +115,19 @@ DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample Size 96'
 ##### contour plot #############################################################
 
 # add facet labels as 'label' in DF
-DF$label <- rep(c('A', 'B', 'C', 'D'), each = 200)
+DF$label <- rep(c('(a)', '(b)', '(c)', '(d)'), each = 200)
 
 fig2 <- ggplot(data = DF, aes(x = PropNests, 
                               y = OSR, 
                               z = Proportion)) +
   geom_contour_filled(bins = 5) +
   xlab('Proportion of clutches sampled') +
-  ylab('Operational Sex Ratio') +
-  labs(fill = 'Confidence') +
+  ylab('Operational sex ratio') +
+  labs(fill = 'Proportion \n correct \n') +
   guides(fill = guide_legend(reverse = TRUE)) + 
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 25), 
+  theme(text = element_text(size = 20), 
         axis.text = element_text(size = 15)) +
   geom_text(aes(x = 0.125, y = 0.45, 
                 label = label, 

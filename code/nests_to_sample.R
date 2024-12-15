@@ -6,7 +6,7 @@
 #' \code{nests_to_sample} Samples nests across a whole breeding season to 
 #'    determine if all of the males that contributed were identified. 
 #'
-#' @param n_sims integer value, the number of simulations to run. Default value 
+#' @param nsims integer value, the number of simulations to run. Default value 
 #'    is 1e6.
 #' @param pop_size integer value, the population size of all breeding adults. 
 #'    Default value is 100.
@@ -34,10 +34,10 @@
 #'
 #' @examples
 #' hatchlings_to_sample(hatchlings_mu = 100.58, hatchlings_sd = 22.61, 
-#'                      max_males = 5, n_sims = 1e5, n_sizes = c(32, 96), 
+#'                      max_males = 5, nsims = 1e5, n_sizes = c(32, 96), 
 #'                      fertilization_mode = 'random')
 #' num_males <- number_of_males(hatchlings_mu = 100.58, hatchlings_sd = 22.61, 
-#'    max_males = 5, n_sims = 1e4, n_sizes = c(32, 96), 
+#'    max_males = 5, nsims = 1e4, n_sizes = c(32, 96), 
 #'    fertilization_modes = c('random', 'exponential', 'dominant50', 
 #'                            'dominant70', 'dominant90', 'mixed_dominant'), 
 #'    min_nest_size = 10)
@@ -50,7 +50,7 @@
 #'    Mprob = c(0.463, 0.318, 0.157, 0.034, 0.028), 
 #'    Fprob = c(1), nests_mu = 4.95, nests_sd = 2.09, id_prob = DF)
 
-nests_to_sample <- function(nsims = 1e6,            
+nests_to_sample <- function(nsims = 1e5,            
                             pop_size = 100,        
                             sample_size = 32,
                             fertilization_mode = 'random',
@@ -65,7 +65,7 @@ nests_to_sample <- function(nsims = 1e6,
   ###### Error handling ########################################################
   
   # classes of variables
-  if (n_sims %% 1 != 0) {stop('n_sims must be an integer value.')}
+  if (nsims %% 1 != 0) {stop('nsims must be an integer value.')}
   if (pop_size %% 1 != 0) {stop('pop_size must be an integer value.')}
   if (sample_size %% 1 != 0) {stop('sample_size must be an integer value.')}
   if (!is.character(fertilization_modes)) 
@@ -77,21 +77,21 @@ nests_to_sample <- function(nsims = 1e6,
   if (!is.data.frame(id_probs)) {stop('id_probs must be a data frame.')}
   
   # acceptable values
-  if (n_sims <= 0) {stop('n_sims must be greater than 0.')}
+  if (nsims <= 0) {stop('nsims must be greater than 0.')}
   if (pop_size <= 0) {stop('pop_size must be greater than 0.')}
   if (sample_size <= 0) {stop('sample_size must be greater than 0.')}
   if (!(fertilization_mode) %in% c('random', 'exponential', 'dominant50', 
                                    'dominant70', 'dominant90', 
                                    'mixed_dominant'))   
     {stop('fertilization mode given is not recognized.')}
-  if (sum(MProb < 0) > 0) {stop('Mprob values cannot be below zero.')}  
-  if (sum(MProb > 1) > 0) {stop('Mprob values cannot be above 1.')}  
-  if (sum(FProb < 0) > 0) {stop('FProb values cannot be below zero.')}  
-  if (sum(FProb > 1) > 0) {stop('FProb values cannot be above 1.')} 
+  if (sum(Mprob < 0) > 0) {stop('Mprob values cannot be below zero.')}  
+  if (sum(Mprob > 1) > 0) {stop('Mprob values cannot be above 1.')}  
+  if (sum(Fprob < 0) > 0) {stop('Fprob values cannot be below zero.')}  
+  if (sum(Fprob > 1) > 0) {stop('Fprob values cannot be above 1.')} 
   if (nests_mu <= 0) {stop('nests_mu must be greater than 0.')}
   if (nests_sd <= 0) {stop('nests_sd must be greater than 0.')}
-  if (sum(id_probs < 0) > 0) {stop('id_probs values cannot be below zero.')}  
-  if (sum(id_probs > 1) > 0) {stop('id_probs values cannot be above 1.')} 
+  # if (sum(id_probs < 0) > 0) {stop('id_probs values cannot be below zero.')}  
+  # if (sum(id_probs > 1) > 0) {stop('id_probs values cannot be above 1.')} 
 
   ##############################################################################
   
