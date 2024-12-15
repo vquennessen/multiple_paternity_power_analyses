@@ -43,24 +43,24 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
-  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
-  xlab('Number of males') +
-  ylab('Paternity mode') +
+  guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
+  xlab('Number of fathers') +
+  ylab('Paternal contribution mode') +
   # ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 25), 
+  theme(text = element_text(size = 20), 
         axis.text = element_text(size = 15)) +
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
   
   # random
-  annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 6.1, label = '0.996', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 6.1, label = '0.996', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 5.75, yend = 5.75, colour = "black", 
            lwd = 3) +
@@ -80,10 +80,10 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) +
   
   # exponential
-  annotate(geom = 'text', x = 1, y = 5.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 5.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 5.1, label = '0.972', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 5.1, label = '0.748', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 5.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 5.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 5.1, label = '0.972', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 5.1, label = '0.748', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 4.75, yend = 4.75, colour = "black", 
            lwd = 3) +
@@ -103,10 +103,10 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) +
   
   # dominant 50%
-  annotate(geom = 'text', x = 1, y = 4.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 4.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 4.1, label = '0.991', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 4.1, label = '0.945', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 4.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 4.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 4.1, label = '0.991', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 4.1, label = '0.945', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 3.75, yend = 3.75, colour = "black", 
            lwd = 3) +
@@ -126,10 +126,10 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) +
   
   # dominant 70
-  annotate(geom = 'text', x = 1, y = 3.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 3.1, label = '0.989', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 3.1, label = '0.900', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 3.1, label = '0.702', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 3.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 3.1, label = '0.989', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 3.1, label = '0.900', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 3.1, label = '0.702', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 0.82, y = 2.75, yend = 2.75, colour = "black", 
            lwd = 3) +
@@ -149,10 +149,10 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) +
   
   # dominant 90
-  annotate(geom = 'text', x = 1, y = 2.1, label = '0.965', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 2.1, label = '0.647', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 2.1, label = '0.282', colour = 'white') +
-  annotate(geom = 'text', x = 4, y = 2.1, label = '0.088', colour = 'white') +
+  annotate(geom = 'text', x = 1, y = 2.1, label = '0.965', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 2.1, label = '0.647', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 2.1, label = '0.282', colour = 'white', size = 5) +
+  annotate(geom = 'text', x = 4, y = 2.1, label = '0.088', colour = 'white', size = 5) +
   
   annotate("segment", x = 0.52, xend = 0.62, y = 1.75, yend = 1.75, colour = "black", 
            lwd = 3) +
@@ -172,10 +172,10 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) +
   
   # mixed dominant
-  annotate(geom = 'text', x = 1, y = 1.1, label = '0.988', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 1.1, label = '0.878', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 1.1, label = '0.723', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 1.1, label = '0.578', colour = 'black') + 
+  annotate(geom = 'text', x = 1, y = 1.1, label = '0.988', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 1.1, label = '0.878', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 1.1, label = '0.723', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 1.1, label = '0.578', colour = 'black', size = 5) + 
   
   annotate("segment", x = 0.52, xend = 0.62, y = 0.75, yend = 0.75, colour = "black", 
            lwd = 3) +
@@ -228,13 +228,13 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
-  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
-  xlab('Number of males') +
-  ylab('Paternity mode') +
+  guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
+  xlab('Number of fathers') +
+  ylab('Paternal contribution mode') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 25), 
+  theme(text = element_text(size = 20), 
         axis.text = element_text(size = 15)) +
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
@@ -242,10 +242,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
   # ggtitle('Proportion correct with sample size 96 \n and marginal contributions') +
   
   # random
-  annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 6.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 6.1, label = '1.000', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 6.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 6.1, label = '1.000', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 5.75, yend = 5.75, colour = "black", 
            lwd = 3) +
@@ -265,10 +265,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) +
   
   # exponential
-  annotate(geom = 'text', x = 1, y = 5.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 5.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 5.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 5.1, label = '0.989', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 5.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 5.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 5.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 5.1, label = '0.989', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 4.75, yend = 4.75, colour = "black", 
            lwd = 3) +
@@ -288,10 +288,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) +
   
   # dominant 50%
-  annotate(geom = 'text', x = 1, y = 4.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 4.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 4.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 4.1, label = '1.000', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 4.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 4.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 4.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 4.1, label = '1.000', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 1.01, y = 3.75, yend = 3.75, colour = "black", 
            lwd = 3) +
@@ -311,10 +311,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) +
   
   # dominant 70%
-  annotate(geom = 'text', x = 1, y = 3.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 3.1, label = '1.000', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 3.1, label = '0.999', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 3.1, label = '0.992', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 3.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 3.1, label = '1.000', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 3.1, label = '0.999', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 3.1, label = '0.992', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 0.82, y = 2.75, yend = 2.75, colour = "black", 
            lwd = 3) +
@@ -334,10 +334,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) +
   
   # dominant 90
-  annotate(geom = 'text', x = 1, y = 2.1, label = '0.999', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 2.1, label = '0.973', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 2.1, label = '0.848', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 2.1, label = '0.630', colour = 'black') +
+  annotate(geom = 'text', x = 1, y = 2.1, label = '0.999', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 2.1, label = '0.973', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 2.1, label = '0.848', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 2.1, label = '0.630', colour = 'black', size = 5) +
   
   annotate("segment", x = 0.52, xend = 0.62, y = 1.75, yend = 1.75, colour = "black", 
            lwd = 3) +
@@ -357,10 +357,10 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) +
   
   # mixed dominant
-  annotate(geom = 'text', x = 1, y = 1.1, label = '0.999', colour = 'black') +
-  annotate(geom = 'text', x = 2, y = 1.1, label = '0.991', colour = 'black') +
-  annotate(geom = 'text', x = 3, y = 1.1, label = '0.949', colour = 'black') +
-  annotate(geom = 'text', x = 4, y = 1.1, label = '0.873', colour = 'black') + 
+  annotate(geom = 'text', x = 1, y = 1.1, label = '0.999', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 2, y = 1.1, label = '0.991', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 3, y = 1.1, label = '0.949', colour = 'black', size = 5) +
+  annotate(geom = 'text', x = 4, y = 1.1, label = '0.873', colour = 'black', size = 5) + 
   
   annotate("segment", x = 0.52, xend = 0.62, y = 0.75, yend = 0.75, colour = "black", 
            lwd = 3) +
@@ -396,6 +396,6 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig4, 
-       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
+       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figS1.png", 
        height = 6, width = 12)
 
