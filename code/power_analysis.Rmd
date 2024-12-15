@@ -30,7 +30,7 @@ hatchlings_sd <- 22.61
 max_males <- 5
 n_sims <- 1e6
 n_sizes <- c(32, 96)
-computer <- 'laptop'
+computer <- 'desktop'
 ```
 
 ## Question 1: How many hatchlings should be sampled from a nest to robustly estimate the number of males that contributed to it?
@@ -86,10 +86,9 @@ source('hatchlings_to_sample.R')
 output1 <- hatchlings_to_sample(hatchlings_mu,
                                 hatchlings_sd,     
                                 max_males,          
-                                fertilization_mode, 
+                                fertilization_mode = 'random', 
                                 n_sims,             
-                                n_sizes,              
-                                computer)
+                                n_sizes)
 
 # figure
 A <- output1[[1]]
@@ -111,9 +110,8 @@ source('hatchlings_to_sample.R')
 output2 <- hatchlings_to_sample(n_hatchlings = 100,
                                 max_hatchlings = 96,
                                 max_males = 7,
-                                breeding = 'exponential',
+                                fertilization_mode = 'exponential',
                                 n_sims = n_sims, 
-                                dom = NULL, 
                                 n_sizes = c(32, 96))
 
 # figure
@@ -139,9 +137,8 @@ source('hatchlings_to_sample.R')
 output3 <- hatchlings_to_sample(n_hatchlings = 100, 
                      max_hatchlings = 96, 
                      max_males = 7, 
-                     breeding = 'dominant', 
+                     fertilization_mode = 'dominant90', 
                      n_sims = n_sims, 
-                     dom = 0.9, 
                      n_sizes = c(32, 96))
 
 # figure
@@ -189,9 +186,8 @@ source('hatchlings_to_sample.R')
 output4 <- hatchlings_to_sample(n_hatchlings = 100, 
                                 max_hatchlings = 96, 
                                 max_males = 5, 
-                                breeding = 'flexible_dominant', 
+                                fertilization_mode = 'mixed_dominant', 
                                 n_sims = n_sims, 
-                                dom = NULL, 
                                 n_sizes = c(32, 96))
 
 # figure
@@ -250,9 +246,8 @@ source('hatchlings_to_sample.R')
 output5 <- hatchlings_to_sample(n_hatchlings = 100, 
                                 max_hatchlings = 96, 
                                 max_males = 7, 
-                                breeding = 'dominant', 
+                                fertilization_mode = 'dominant70', 
                                 n_sims = n_sims, 
-                                dom = 0.7, 
                                 n_sizes = c(32, 96))
 
 # figure
@@ -276,7 +271,7 @@ source('hatchlings_to_sample.R')
 output6 <- hatchlings_to_sample(n_hatchlings = 100, 
                                 max_hatchlings = 96, 
                                 max_males = 7, 
-                                breeding = 'dominant', 
+                                breeding = 'dominant50', 
                                 n_sims = n_sims, 
                                 dom = 0.5, 
                                 n_sizes = c(32, 96))

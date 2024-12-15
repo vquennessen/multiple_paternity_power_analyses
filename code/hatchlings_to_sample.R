@@ -45,8 +45,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
   if (!is.numeric(hatchlings_sd)) {stop('hatchlings_sd must be a numeric value.')}
   if (max_males %% 1 != 0) {stop('max_males must be an integer value.')}
   if (n_sims %% 1 != 0) {stop('n_sims must be an integer value.')}
-  if (n_sizes %% 1 != 0) {stop('n_sizes must be an integer value.')}
-  if (!is.character(fertilization_modes)) 
+  if (prod(n_sizes %% 1) > 0) {stop('all elements in n_sizes must be integers.')}
+  if (!is.character(fertilization_mode)) 
   {stop('fertilization_modes must be a character.')}
   
   # acceptable values
@@ -54,8 +54,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
   if (hatchlings_sd <= 0) {stop('hatchlings_sd must be greater than 0.')}
   if (max_males < 2) {stop('max_males must be greater than 1.')}
   if (n_sims <= 0) {stop('n_sims must be greater than 0.')}
-  if (n_sizes <= 0) {stop('n_sizes must be greater than 0.')}
-  if (n_sizes > 96) {stop('n_sizes must be less than 97.')}
+  if (sum(n_sizes <= 0) > 0) {stop('n_sizes must be greater than 0.')}
+  if (sum(n_sizes > 96) > 0) {stop('n_sizes must be less than 97.')}
   if (!(fertilization_mode) %in% c('random', 'exponential', 'dominant50', 
                                    'dominant70', 'dominant90', 
                                    'mixed_dominant')) 
@@ -179,7 +179,7 @@ hatchlings_to_sample <- function(hatchlings_mu,
                          col = as.factor(Males))) +
     geom_hline(yintercept = 0.8, linetype = 2) +
     geom_path(lwd = 1) +
-    labs(col = 'Number \n of Males') +
+    labs(col = 'Number \n of Fathers') +
     scale_color_manual(values = colors) +
     ylab('Proportion Correct') +
     xlab('Hatchlings Sampled') +
