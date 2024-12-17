@@ -9,8 +9,9 @@ library(ggplot2)
 library(viridisLite)
 library(patchwork)
 
-# model parameters
-# fertilization modes
+##### model parameters #########################################################
+
+## fertilization modes
 fmodes <- c('random',
             # 'exponential',
             # 'dominant50',
@@ -28,11 +29,15 @@ fmode_titles <- c('Random', # 'Exponential',
                   # 'Mixed Dominant')
                   'Dominant 90')
 
-# figure number
-fig <- 'fig4'
+## figure number
+# fig <- 'fig4'
+# fig <- 'figS2'
+fig <- 'figS3'
 
-# data title
-data_title <- 'no_polygyny'
+## data title
+# data_title <- 'no_polygyny'
+# data_title <- 'uniform_Mprob_no_polygyny'
+data_title <- 'uniform_Mprob_and_Fprob'
 
 # sample sizes
 sample_sizes <- c(32, 96)
@@ -42,6 +47,8 @@ nsims <- 1e+05
 
 # dimensions
 nS <- length(sample_sizes)
+
+################################################################################
 
 # initialize dataframe
 DF <- data.frame()
@@ -115,7 +122,7 @@ DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample size 96'
 ##### contour plot #############################################################
 
 # add facet labels as 'label' in DF
-DF$label <- rep(c('(a)', '(b)', '(c)', '(d)'), each = 200)
+DF$label <- rep(c('(a)', '(b)', '(c)', '(d)'), each = nrow(output))
 
 fig2 <- ggplot(data = DF, aes(x = PropNests, 
                               y = OSR, 
