@@ -19,7 +19,7 @@
 #'    'dominant50', 'dominant70', 'dominant90', 'mixed_dominant'). 
 #' @param min_nest_size integer value, the number of hatchlings to be assigned 
 #'    to a nest where 0 or fewer was returned from the normal distribution based 
-#'    on hatchlings_mu and hatchlings_sd. 
+#'    on hatchlings_mu and hatchlings_sd. Default value is 10. 
 #'
 #' @return saves object where probabilities of identifying 
 #' @export
@@ -38,7 +38,8 @@ number_of_males <- function(hatchlings_mu = 100.58,
                             n_sizes = c(32, 96), 
                             fertilization_modes = c('random', 'exponential', 
                                                     'dominant50', 'dominant70', 
-                                                    'dominant90', 'mixed_dominant'), 
+                                                    'dominant90', 
+                                                    'mixed_dominant'), 
                             min_nest_size = 10) 
   
 {
