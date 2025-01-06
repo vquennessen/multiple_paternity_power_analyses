@@ -11,7 +11,7 @@
 #' @param pop_size integer value, the population size of all breeding adults. 
 #'    Default value is 100.
 #' @param sample_size integer value, the sample size to collect. Default value 
-#'    is 32. .
+#'    is 32.
 #' @param fertilization_mode a character value defining the distribution of 
 #'    male contributions to fertilizing a single nest. Potential values 
 #'    include random', 'exponential', dominant50', 'dominant70', 
@@ -26,8 +26,9 @@
 #'    nests a female lays in one nesting season. Default value is 2.09. 
 #' @param id_probs a dataframe with columns "Fertilization Mode", 
 #'    "Males" (number of contributing males), "Sample Size" (1 - 96), 
-#'    "Proportion Correct" (how many simulations correctly identified all males), 
-#'    and "Marginal" (the marginal fertilization contributions of the last male). 
+#'    "Proportion Correct" (how many simulations correctly identified all 
+#'    males), and "Marginal" (the marginal fertilization contributions of the 
+#'    last male). 
 #'
 #' @return
 #' @export

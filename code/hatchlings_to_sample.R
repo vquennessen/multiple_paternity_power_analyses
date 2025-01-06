@@ -17,7 +17,7 @@
 #' @param fertilization_mode a character value defining the distribution of 
 #'    male contributions to fertilizing a single nest. Potential values 
 #'    include random', 'exponential', dominant50', 'dominant70', 
-#'    'dominant90', 'mixed_dominant'). 
+#'    'dominant90', 'mixed_dominant'). Default value is 'random'. 
 #'
 #' @return creates and saves figures to plot confidence of identifying all males
 #'    given different numbers of contributing males and sample sizes. Creates 
@@ -29,12 +29,12 @@
 #'                      max_males = 5, n_sims = 1e5, n_sizes = c(32, 96), 
 #'                      fertilization_mode = 'random')
 #' 
-hatchlings_to_sample <- function(hatchlings_mu,
-                                 hatchlings_sd,      # number of eggs per nest
-                                 max_males,          # max # of M F can mate with
-                                 n_sims,             # number of simulations to run
-                                 n_sizes,            # sample sizes to run  
-                                 fertilization_mode) # fertilization mode
+hatchlings_to_sample <- function(hatchlings_mu = 100.58,
+                                 hatchlings_sd = 22.61,      
+                                 max_males = 5,          
+                                 n_sims = 1e6,             
+                                 n_sizes = c(32, 96),              
+                                 fertilization_mode = 'random') 
   
 {
   
