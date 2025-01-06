@@ -69,12 +69,22 @@ nests_to_sample <- function(nsims = 1e5,
   if (pop_size %% 1 != 0) {stop('pop_size must be an integer value.')}
   if (sample_size %% 1 != 0) {stop('sample_size must be an integer value.')}
   if (!is.character(fertilization_modes)) 
-  {stop('fertilization_modes must be a character.')}
+    {stop('fertilization_modes must be a character.')}
   if (!is.numeric(Mprob)) {stop('Mprob must be a numeric value.')}
   if (!is.numeric(Fprob)) {stop('Fprob must be a numeric value.')}
   if (!is.numeric(nests_mu)) {stop('nests_mu must be a numeric value.')}
   if (!is.numeric(nests_sd)) {stop('nests_sd must be a numeric value.')}
   if (!is.data.frame(id_probs)) {stop('id_probs must be a data frame.')}
+  if (!is.character(id_probs$fertilization_modes)) 
+    {stop('fertilization_modes in id_probs must be a character.')}  
+  if (!is.numeric(id_probs$males)) 
+    {stop('males in id_probs must be a numeric value.')}
+  if (!is.numeric(id_probs$Sample_size)) 
+    {stop('Sample_size in id_probs must be a numeric value.')}
+  if (!is.numeric(id_probs$Proportion_correct)) 
+    {stop('Proportion_correct in id_probs must be a numeric value.')}
+  if (!is.numeric(id_probs$Marginal)) 
+    {stop('Marginal in id_probs must be a numeric value.')}
   
   # acceptable values
   if (nsims <= 0) {stop('nsims must be greater than 0.')}
@@ -83,15 +93,29 @@ nests_to_sample <- function(nsims = 1e5,
   if (!(fertilization_mode) %in% c('random', 'exponential', 'dominant50', 
                                    'dominant70', 'dominant90', 
                                    'mixed_dominant'))   
-    {stop('fertilization mode given is not recognized.')}
+    {stop('fertilization mode(s) given not recognized.')}
   if (sum(Mprob < 0) > 0) {stop('Mprob values cannot be below zero.')}  
   if (sum(Mprob > 1) > 0) {stop('Mprob values cannot be above 1.')}  
   if (sum(Fprob < 0) > 0) {stop('Fprob values cannot be below zero.')}  
   if (sum(Fprob > 1) > 0) {stop('Fprob values cannot be above 1.')} 
   if (nests_mu <= 0) {stop('nests_mu must be greater than 0.')}
   if (nests_sd <= 0) {stop('nests_sd must be greater than 0.')}
-  # if (sum(id_probs < 0) > 0) {stop('id_probs values cannot be below zero.')}  
-  # if (sum(id_probs > 1) > 0) {stop('id_probs values cannot be above 1.')} 
+  if (!(id_probs$Fertilization_mode) %in% c('random', 'exponential', 
+                                            'dominant50', 'dominant70', 
+                                            'dominant90', 'mixed_dominant'))   
+  {stop('fertilization mode(s) given in id_probs not recognized.')}
+  if (sum(id_probs$Males < 2) > 0) {
+    stop('id_probs Males cannot be below 2.')}
+  if (sum(id_probs$Sample_size < 0) > 0) {
+    stop('id_probs Sample_size cannot be below zero.')}
+  if (sum(id_probs$Probability < 0) > 0) {
+    stop('id_probs probabilities cannot be below zero.')}
+  if (sum(id_probs$Probability > 1) > 0) {
+    stop('id_probs probabilities cannot be above 1.')}
+  if (sum(id_probs$Marginal < 0) > 0) {
+    stop('id_probs Marginal cannot be below zero.')}
+  if (sum(id_probs$Marginal > 1) > 0) {
+    stop('id_probs Marginal cannot be above 1.')}
 
   ##############################################################################
   
@@ -119,9 +143,6 @@ nests_to_sample <- function(nsims = 1e5,
     nM <- pop_size*OSR[o]
     nF <- pop_size - nM
     
-    # # make breeding pool of males
-    # BPm <- rep(1:nM, each = maxM)
-    
     # for each proportion of nests sampled
     for (pn in 1:nPN) {
       
@@ -129,10 +150,13 @@ nests_to_sample <- function(nsims = 1e5,
       ID <- rep(NA, nsims)
       
       # initialize number of nests
-      nNests <- matrix(round(rnorm(n = nF*nsims, mean = nests_mu, sd = nests_sd)),
-                       nrow = nF, ncol = nsims)
+      nNests <- matrix(round(rnorm(n = nF*nsims, 
+                                   mean = nests_mu, 
+                                   sd = nests_sd)),
+                       nrow = nF, 
+                       ncol = nsims)
       
-      # make sure there aren't any negative or 0 nests
+      # make sure there aren't any negative or 0 nests, replace with 1 nest
       nNests[nNests < 1] <- 1
       
       # initialize number of males
@@ -140,7 +164,8 @@ nests_to_sample <- function(nsims = 1e5,
                               size = nF*nsims, 
                               prob = Mprob, 
                               replace = TRUE), 
-                       nrow = nF, ncol = nsims)
+                       nrow = nF, 
+                       ncol = nsims)
       
       # proportion of nests sampled
       prop <- propNests[pn]
@@ -149,7 +174,10 @@ nests_to_sample <- function(nsims = 1e5,
       for (i in 1:nsims) {
         
         # how many females per male
-        nFemales <- sample(1:maxF, size = nM, prob = Fprob, replace = TRUE)
+        nFemales <- sample(1:maxF, 
+                           size = nM, 
+                           prob = Fprob, 
+                           replace = TRUE)
         
         # make breeding pool of males
         BPm <- rep(1:nM, times = nFemales)
@@ -169,34 +197,38 @@ nests_to_sample <- function(nsims = 1e5,
           # if there are no males left, stop the loop for the simulation    
           if (n_distinct(na.omit(BPm)) == 0) { break; break }
           
-          # if there are not enough unique males left in the breeding pool 
-          # for this female
+          # if there are not enough unique males left in the breeding pool for
+          # this female
           if (n_distinct(BPm) < nM_f) {
             
-            # change the number of males with however many unique males are left
+            # change the number of males to however many unique males are left
             nM_f <- n_distinct(BPm)
             
           }
           
-          # who are the contributing males themselves, sample from breeding pool 
-          # without duplicates
-          males_f <- sample(unique(BPm), size = nM_f, replace = FALSE)
+          # who are the contributing males themselves, 
+          # sample from breeding pool without duplicates
+          males_f <- sample(unique(BPm), 
+                            size = nM_f, 
+                            replace = FALSE)
           
-          # new breeding pool for males
+          # updated breeding pool for males minus the ones that already bred
           BPm <- BPm[-match(males_f, BPm)]
           
           # if there's only 1 male
           if (nM_f == 1) {
             
-            # append identified male to nests nN_f times
+            # append identified male to nests nN_f times, since it will 
+            # automatically get identified
             nests <- append(nests, rep(list(males_f), times = nN_f))
             
           } else {
             
-            # probability of identification of all possible males for this female
+            # probability of identification of all possible males for this 
+            # female, pulled from id_probs dataframe given
             sub <- subset(id_probs, Males_contributing == nM_f & Probability > 0)
             
-            # if there's only one possible number of males identified for any nest
+            # if total males are automatically identified for any nest
             if (nrow(sub) == 1) {
               
               nests <- append(nests, rep(list(males_f), times = nN_f))
@@ -212,14 +244,17 @@ nests_to_sample <- function(nsims = 1e5,
               # if there's only 1 nest
               if (nN_f == 1) {
                 
+                # add the males identified from the nest
                 nests <- append(nests, list(sample(males_f,
                                                    size = nM_id,
                                                    replace = TRUE)))
                 
               } else {
                 
+                # if there are more than 1 nest
                 for (n in 1:nN_f) {
                   
+                  # add the males identified from the nests
                   nests <- append(nests, list(sample(males_f,
                                                      size = nM_id[n],
                                                      replace = FALSE)))
@@ -238,6 +273,7 @@ nests_to_sample <- function(nsims = 1e5,
         nests <- nests[-1]
         
         # number of males actually represented across all nests, i.e. breeding
+        # males for this population in this simulation
         num_males <- n_distinct(unlist(nests))
         
         # number of nests total
@@ -249,7 +285,7 @@ nests_to_sample <- function(nsims = 1e5,
         # if no nests end up getting sampled, sample 1 nest
         if (num_nests_sampled < 1) { num_nests_sampled <- 1 }
         
-        # sample all possible nests for proportion
+        # sample nests
         indices <- sample(1:num_nests, 
                           size = num_nests_sampled, 
                           replace = FALSE)
@@ -258,7 +294,8 @@ nests_to_sample <- function(nsims = 1e5,
         identified_males <- unlist(nests[indices])
         
         # were all males identified?
-        ID[i] <- ifelse(n_distinct(identified_males) == as.integer(num_males), 1, 0)
+        ID[i] <- ifelse(n_distinct(identified_males) == as.integer(num_males), 
+                        1, 0)
         
       }
       
