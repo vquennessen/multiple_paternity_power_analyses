@@ -17,7 +17,7 @@
 #' @param fertilization_mode a character value defining the distribution of 
 #'    male contributions to fertilizing a single nest. Potential values 
 #'    include random', 'exponential', dominant50', 'dominant70', 
-#'    'dominant90', 'mixed_dominant'). 
+#'    'dominant90', 'mixed_dominant'). Default value is 'random'. 
 #'
 #' @return creates and saves figures to plot confidence of identifying all males
 #'    given different numbers of contributing males and sample sizes. Creates 
@@ -29,12 +29,12 @@
 #'                      max_males = 5, n_sims = 1e5, n_sizes = c(32, 96), 
 #'                      fertilization_mode = 'random')
 #' 
-hatchlings_to_sample <- function(hatchlings_mu,
-                                 hatchlings_sd,      # number of eggs per nest
-                                 max_males,          # max # of M F can mate with
-                                 n_sims,             # number of simulations to run
-                                 n_sizes,            # sample sizes to run  
-                                 fertilization_mode) # fertilization mode
+hatchlings_to_sample <- function(hatchlings_mu = 100.58,
+                                 hatchlings_sd = 22.61,      
+                                 max_males = 5,          
+                                 n_sims = 1e6,             
+                                 n_sizes = c(32, 96),              
+                                 fertilization_mode = 'random') 
   
 {
   
@@ -67,13 +67,15 @@ hatchlings_to_sample <- function(hatchlings_mu,
   # pre-allocate data frame
   DF <- data.frame(Fertilization_mode = fertilization_mode,
                    Males = rep(2:max_males, each = max(n_sizes)), 
-                   Sample_size = rep(c(1:max(n_sizes)), times = (max_males - 1)), 
-                   Proportion_correct = rep(NA, dim = (max_males - 1)*(max(n_sizes) - 1))) 
+                   Sample_size = rep(c(1:max(n_sizes)), 
+                                     times = (max_males - 1)), 
+                   Proportion_correct = rep(NA, 
+                                            dim = (max_males - 1)*(max(n_sizes) - 1))) 
   
   # for each number of males that contribute to a nest:
   for (i in 2:max_males) {
     
-    # set contributions per males
+    # set contributions per males based on fertilization mode
     if (fertilization_mode == 'dominant90') {
       MC <- 0.90
       contributions <- c(MC, rep((1 - MC)/(i - 1), (i - 1)))
@@ -102,7 +104,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
     } else if (fertilization_mode == 'mixed_dominant') {
       doms <- sample(c(0.50, 0.70, 0.90), size = n_sims, replace = TRUE)
       M1 <- matrix(doms, nrow = n_sims, ncol = 1)
-      M2 <- matrix(rep((1 - doms) / (i - 1), i - 1), nrow = n_sims, ncol = i - 1)
+      M2 <- matrix(rep((1 - doms) / (i - 1), i - 1), 
+                   nrow = n_sims, ncol = i - 1)
       probs <- cbind(M1, M2)
       title <- 'Mixed dominant fertilization mode'
       
@@ -116,11 +119,12 @@ hatchlings_to_sample <- function(hatchlings_mu,
       
       # pre-allocate correct identifications of number of males
       correct <- rep(NA, n_sims)
-      # estimate <- rep(NA, n_sims)
-      
+
       # initialize nest sizes
       # pull numbers of hatchlings from normal distribution
-      n_hatchlings <- rnorm(n = n_sims, mean = hatchlings_mu, sd = hatchlings_sd)
+      n_hatchlings <- rnorm(n = n_sims, 
+                            mean = hatchlings_mu, 
+                            sd = hatchlings_sd)
       
       # set any nests with 0 or fewer eggs to 10 eggs
       n_hatchlings[which(n_hatchlings <= 0)] <- 10
@@ -128,7 +132,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
       for (k in 1:n_sims) {
         
         # if mixed dominant, extract contributions
-        if (fertilization_mode == 'mixed_dominant') { contributions <- probs[k, ]}
+        if (fertilization_mode == 'mixed_dominant') { 
+          contributions <- probs[k, ]}
         
         # make nest with i fathers
         nest <- sample(x = 1:i, 
@@ -145,18 +150,16 @@ hatchlings_to_sample <- function(hatchlings_mu,
         
         # correct allocation of number of males?
         correct[k] <- length(unique(samples)) == i
-        # estimate[k] <- length(unique(samples))
-        
+
       }
       
       # calculate index in data frame
       index <- (i - 2)*(max(n_sizes)) + j 
-      # print(index)
+      # print(index) for troubleshooting
       
       # stick proportion in data frame
       DF$Proportion_correct[index] <- mean(correct)
-      # DF$Avg_detected[index] <- mean(estimate)
-      
+
       # grab column means of probs for dominant mixed fertilization
       if (fertilization_mode == 'mixed_dominant') {
         contributions2 <- colMeans(probs)
@@ -175,7 +178,8 @@ hatchlings_to_sample <- function(hatchlings_mu,
   colors <- viridis(max_males)
   
   # plot results - proportion correct
-  fig1 <- ggplot(DF, aes(x = Sample_size, y = Proportion_correct, 
+  fig1 <- ggplot(DF, aes(x = Sample_size, 
+                         y = Proportion_correct, 
                          col = as.factor(Males))) +
     geom_hline(yintercept = 0.8, linetype = 2) +
     geom_path(lwd = 1) +
@@ -188,9 +192,13 @@ hatchlings_to_sample <- function(hatchlings_mu,
   
   # save plot
   ggsave(plot = fig1, 
-         filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
-         path = paste('~/multiple_paternity_power_analyses/figures', sep = ''),
-         width = 6, height = 4)
+         filename = paste(fertilization_mode, 
+                          '_fig1_proportion_correct.png', 
+                          sep = ''),
+         path = paste('~/multiple_paternity_power_analyses/figures', 
+                      sep = ''),
+         width = 6, 
+         height = 4)
   
   # What's our confidence if we sample 32 percent of the eggs?
   DFsamples <- DF %>% filter(Sample_size %in% n_sizes)
@@ -205,7 +213,9 @@ hatchlings_to_sample <- function(hatchlings_mu,
   
   # save plot
   ggsave(plot = fig1, 
-         filename = paste(fertilization_mode, '_fig1_proportion_correct.png', sep = ''),
+         filename = paste(fertilization_mode, 
+                          '_fig1_proportion_correct.png', 
+                          sep = ''),
          path = '~/multiple_paternity_power_analyses/figures',
          width = 6, height = 4)
   
@@ -215,12 +225,15 @@ hatchlings_to_sample <- function(hatchlings_mu,
   
   # save confidence table
   png(filename = paste('~/multiple_paternity_power_analyses/data/', 
-                       fertilization_mode, '_conf_table.png', sep = ''), 
-      width = 200, height = 200)
+                       fertilization_mode, 
+                       '_conf_table.png', 
+                       sep = ''), 
+      width = 200, 
+      height = 200)
   grid.table(DFsamples, rows = NULL)
   dev.off()
   
-  # what will the code produce
+  # what will the code produce as output
   output <- list(fig1, DF, DFsamples, DFsamples2)
   
   return(output)
