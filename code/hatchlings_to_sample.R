@@ -1,21 +1,21 @@
 #' hatchlings_to_sample {multiple_paternity_power_analyses}
 #'
-#' \code{hatchlings_to_sample}  samples hatchlings from nests to determine the
-#'    confidence of identifying all of the fathers that contributed for 
+#' \code{hatchlings_to_sample}  samples hatchlings from clutches to determine 
+#'    the confidence of identifying all of the fathers that contributed for 
 #'    populations that exhibit multiple paternity. 
 #'
 #' @param hatchlings_mu numeric value, the mean number of hatchlings produced in
-#'    a nest. Default value is 100.58. 
+#'    a clutch. Default value is 100.58. 
 #' @param hatchlings_sd numeric value, the standard deviation of the number of 
-#'    hatchlings produced in a nest. Default value is 22.61. 
-#' @param max_fathers integer value, the maximum number of fathers that females 
+#'    hatchlings produced in a clutch. Default value is 22.61. 
+#' @param max_fathers integer value, the maximum number of fathers that mothers 
 #'    can mate with. Default value is 5. 
 #' @param n_sims integer value, the number of simulations to run. Default value 
 #'    is 1e6. 
 #' @param sample_sizes vector of integer values, the sample size(s) to collect. 
 #'    Default value is c(32, 96). 
 #' @param paternal_contribution_mode a character value defining the distribution 
-#'    of paternal contributions to a single nest. Potential values 
+#'    of paternal contributions to a single clutch. Potential values 
 #'    include random', 'exponential', dominant50', 'dominant70', 
 #'    'dominant90', 'mixed_dominant'). Default value is 'random'. 
 #'
@@ -77,7 +77,7 @@ hatchlings_to_sample <- function(hatchlings_mu = 100.58,
                    Proportion_Correct = rep(NA, 
                                             dim = (max_fathers - 1)*(max(sample_sizes) - 1))) 
   
-  # for each number of fathers that contribute to a nest:
+  # for each number of fathers that contribute to a clutch:
   for (i in 2:max_fathers) {
     
     # set contributions per father based on paternal contribution mode
@@ -125,13 +125,13 @@ hatchlings_to_sample <- function(hatchlings_mu = 100.58,
       # pre-allocate correct identifications of number of fathers
       correct <- rep(NA, n_sims)
 
-      # initialize nest sizes
+      # initialize clutch sizes
       # pull numbers of hatchlings from normal distribution
       n_hatchlings <- rnorm(n = n_sims, 
                             mean = hatchlings_mu, 
                             sd = hatchlings_sd)
       
-      # set any nests with 0 or fewer eggs to 10 eggs
+      # set any clutches with 0 or fewer eggs to 10 eggs
       n_hatchlings[which(n_hatchlings <= 0)] <- 10
       
       for (k in 1:n_sims) {
@@ -140,16 +140,16 @@ hatchlings_to_sample <- function(hatchlings_mu = 100.58,
         if (paternal_contribution_mode == 'mixed_dominant') { 
           contributions <- probs[k, ]}
         
-        # make nest with i fathers
-        nest <- sample(x = 1:i, 
+        # make clutch with i fathers
+        clutch <- sample(x = 1:i, 
                        size = n_hatchlings[k], 
                        replace = TRUE,
                        prob = contributions)
         # }
         
-        # take sample of size j from nest (or the whole nest if < j)
-        sample_size <- min(j, length(nest))
-        samples <- sample(x = nest, 
+        # take sample of size j from clutch (or the whole clutch if < j)
+        sample_size <- min(j, length(clutch))
+        samples <- sample(x = clutch, 
                           size = sample_size,
                           replace = FALSE)
         
