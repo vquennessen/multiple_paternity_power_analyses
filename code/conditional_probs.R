@@ -1,96 +1,141 @@
-conditional_probs <- function(number_of_males) {
-  
-  # # load in dataframe created through number_of_males function
-  # load(number_of_males)
+#' conditional_probs {multiple_paternity_power_analyses}
+#'
+#' @param probabilities a data frame that has columns for 
+#' 
+#' Paternal_Contribution_Mode - vector of character values of the different 
+#' paternal contribution modes to analyse. Default values are c('random', 
+#' 'exponential', 'dominant50', 'dominant70', 'dominant90', 'mixed_dominant').
+#' 
+#' Fathers_Actual - the integer number of actual fathers for a clutch. Default 
+#' values are from 1 to 5. 
+#' 
+#' Sample_Size - the integer number of hatchlings to sample from a clutch. 
+#' Default values are 32 and 96. 
+#' 
+#' Fathers_Observed - the integer number of fathers that were identified.
+#' 
+#' Probability - the numeric probability of Fathers_Observed given 
+#' Fathers_Actual. Values must be between 0 and 1, inclusive.
+#' 
+#' @returns two data frames of conditional probabilities for the number of 
+#' actual fathers (Fathers_Actual) given the number of fathers identified 
+#' (Fathers_Observed). The first data frame has columns for 
+#' Paternal_Contribution_Mode, Sample_Size, Fathers_Observed, Fathers_Actual, 
+#' and a Probability column that is the new conditional probability. The second
+#' data frame is wider so that the probability values are displayed by rows of 
+#' Paternal_Contribution_Mode and Fathers_Observed with columns for 
+#' Fathers_Actual. 
+#' 
+#' @export
+#' 
+#' @importFrom dplyr %>%
+#' @importFrom tidyr pivot_wider
+
+#'
+#' @examples
+#' probabilities <- probability_id_fathers(hatchlings_mu = 100.58, 
+#'                                         hatchlings_sd = 22.61, 
+#'                                         max_males = 5, 
+#'                                         n_sims = 1e5, 
+#'                                         n_sizes = c(32, 96), 
+#'                                         Paternity_contribution_mode = 
+#'                                                          c('random', 
+#'                                                            'exponential', 
+#'                                                            'dominant50', 
+#'                                                            'dominant70', 
+#'                                                            'dominant90', 
+#'                                                            'mixed_dominant'), 
+#'                                         min_nest_size = 10)
+#'      
+#' conditional_probs(probabilities)
+
+conditional_probs <- function(probabilities) {
   
   # extract fertilization modes
-  fertilization_modes <- unique(number_of_males$Fertilization_mode)
+  PCMs <- unique(probabilities$Paternal_Contribution_Mode)
   
   # extract max number of males
-  max_males <- max(number_of_males$Males_contributing)
+  max_males <- max(probabilities$Fathers_Actual)
   
   # extract sample sizes
-  sample_sizes <- unique(number_of_males$Sample_size)  
+  sample_sizes <- unique(probabilities$Sample_Size)  
   
   # initialize dataframe
   conditional_probs <- data.frame()
   
   # for each fertilization mode
-  for (f in 1:length(fertilization_modes)) {
+  for (p in 1:length(PCMs)) {
     
     # for each sample size
     for (s in 1:length(sample_sizes)) {
       
       # create subset from data
       # pull out fertilization mode and the sample size
-      subset1 <- number_of_males %>%
-        filter(Fertilization_mode == fertilization_modes[f]) %>%
-        filter(Sample_size == sample_sizes[s])        
+      subset1 <- probabilities %>%
+        filter(Paternal_Contribution_Mode == PCMs[p]) %>%
+        filter(Sample_Size == sample_sizes[s])        
       
       # initialize dataframe
-      DF <- data.frame(Fertilization_Mode = fertilization_modes[f], 
-                       Sample_size = sample_sizes[s], 
-                       Males_identified = unlist(mapply(rep, 
-                                                        1:max_males, 
+      DF <- data.frame(Paternal_Contribution_Mode = PCMs[p], 
+                       Sample_Size = sample_sizes[s], 
+                       Fathers_Observed = unlist(mapply(rep, 1:max_males, 
                                                         max_males:1)), 
-                       Males_contributed = unlist(mapply(seq, 
-                                                         1:max_males, 
-                                                         max_males)), 
+                       Fathers_Actual = paste(unlist(mapply(seq, 1:max_males, 
+                                                      max_males)), 
+                                              ' Actual Father(s)', 
+                                              sep = ''), 
                        Probability = NA)
       
-      # probabilities of 1:max_males males contributing - assume equal
-      PA <- 1/(max_males - 1)
+      # probabilities of 1:max_males Fathers_Actual - assume equal
+      PA <- 1/max_males
       
-      # probabilities of identifying 1:max_males males
+      # probabilities of  1:max_males Fathers_Observed across all potential 
+      # Fathers_Actual
       probs <- subset1 %>% 
-        group_by(Males_identified) %>% 
+        group_by(Fathers_Observed) %>% 
         summarize(total = sum(Probability))
       
-      # marginal probability for each number of males identified
+      # marginal probability for each number of Fathers_Actual
       PBs <- probs$total / sum(subset1$Probability)
-      
-      # probabilities of males identified given contributed
       
       # index restart
       index <- 0
       
-      # for i males identified
+      # for i Fathers_Observed
       for (i in 1:max_males) {
         
-        # for c males contributed
+        # for c Fathers_Actual
         for (c in i:max_males) {
           
-          # if i = 1, then c = 1 doesn't exist, set to 0
-          if (c == 1) {
-            
-            PBA <- 0
-            
-          } else {
-            
-            subset2 <- subset1 %>%
-              filter(Males_identified == i) %>%
-              filter(Males_contributing == c)
-            
-            # probability of i males identified given c contributed
-            PBA <- subset2$Probability
-            
-          }
+          # # if i = 1, then c = 1 doesn't exist, set to 0
+          # if (c == 1) {
+          #   
+          #   PBA <- 0
+          #   
+          # } else {
           
-          # calculate PAB
+          subset2 <- subset1 %>%
+            filter(Fathers_Actual == c) %>%
+            filter(Fathers_Observed == i)
+          
+          # probability of i Fathers_Observed given c Fathers_Actual
+          PBA <- subset2$Probability
+          
+          # calculate PAB (Probability of Fathers_Actual given Fathers_Observed)
           PAB <- PA * PBA / PBs[i]
           
           # index
           index <- index + 1
           
-          # add the PAB to the dataframe
+          # # troubleshooting
+          # print(index)
+          
+          # add the PAB to the data frame
           DF$Probability[index] <- PAB
           
         }
         
       }
-      
-      # # remove first row
-      # DF <- DF[-1, ]
       
       # get rid of any NaN values if they exist
       if (sum(is.nan(DF$Probability)) > 1) {
@@ -106,32 +151,34 @@ conditional_probs <- function(number_of_males) {
       # add 
       conditional_probs <- rbind(conditional_probs, DF)
       
+      
     }
     
   }
   
   # save output
-  save(conditional_probs, file = 'conditional_probs_output.Rdata')
+  save(conditional_probs, file = 'output/conditional_probs.Rdata')
   
   # make it a less obnoxiously long table
   prettier_conditional_probs <- conditional_probs %>%
-    pivot_wider(names_from = 'Males_contributed', values_from = 'Probability') %>%
-    arrange(Fertilization_Mode, Sample_size, Males_identified)
+    pivot_wider(names_from = 'Fathers_Actual', values_from = 'Probability') %>%
+    arrange(Paternal_Contribution_Mode, Sample_Size, Fathers_Observed)
   
   # save output
-  save(prettier_conditional_probs, file = 'prettier_conditional_probs_output.Rdata')
-    
+  save(prettier_conditional_probs, 
+       file = 'output/prettier_conditional_probs.Rdata')
+  
   output <- list(conditional_probs, prettier_conditional_probs)
-
+  
   return(output)
   
 }
 
-setwd('~/Projects/multiple_paternity_power_analyses/output')
+setwd('~/Projects/multiple_paternity_power_analyses')
 
 library(dplyr)
 library(tidyr)
 
-load("~/Projects/multiple_paternity_power_analyses/data/number_of_males.Rdata")
+load("~/Projects/multiple_paternity_power_analyses/output/probabilities.Rdata")
 
-conditional_probs(number_of_males)
+conditional_probs(probabilities)
