@@ -13,19 +13,19 @@
 #'    of father contributions to fertilizing a single clutch. Potential values 
 #'    include random', 'exponential', dominant50', 'dominant70', 
 #'    'dominant90', 'mixed_dominant'). Default value is 'random'.
-#' @param Fprob a numeric vector, the probabilities of eggs from 1 female being 
+#' @param Fprob a numeric vector, the probabilities of eggs from 1 mother being 
 #'    fertilized by 1-max_fathers fathers. 
 #' @param Mprob a numeric vector, the probabilities of fathers fertilizing eggs 
 #'    from 1+ mothers
-#' @param clutches_mu a  numeric value, the mean number of clutches a female lays in 
-#'    one nesting season. Default value is 4.95. 
+#' @param clutches_mu a  numeric value, the mean number of clutches a mother 
+#'    lays in one nesting season. Default value is 4.95. 
 #' @param clutches_sd a numeric value, the standard deviation of the number of 
-#'    clutches a female lays in one nesting season. Default value is 2.09. 
+#'    clutches a mother lays in one nesting season. Default value is 2.09. 
 #' @param proportion_correct_all a data frame with columns "Paternal 
 #'    Contribution Mode", "Fathers" (number of contributing fathers), 
 #'    "Sample Size" (1 - 96), "Proportion Correct" (how many simulations 
 #'    correctly identified all fathers), and "Marginal" (the marginal 
-#'    fertilization contributions of the last father). 
+#'    paternal contributions of the last father). 
 #'
 #' @return
 #' @export
@@ -146,7 +146,7 @@ clutches_to_sample <- function(nsims = 1e4,
     # for each proportion of clutches sampled
     for (pc in 1:nPC) {
       
-      # initialize vector of whether or not all males were identified
+      # initialize vector of whether or not all fathers were identified
       ID <- rep(NA, nsims)
       
       # initialize number of clutches based on number of mothers and pop parameters
