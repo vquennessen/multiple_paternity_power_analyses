@@ -1,4 +1,4 @@
-#' conditional_probs {multiple_paternity_power_analyses}
+#' conditional_probabilities {multiple_paternity_power_analyses}
 #'
 #' @param probabilities a data frame that has columns for 
 #' 
@@ -22,20 +22,19 @@
 #' (Fathers_Observed). The first data frame has columns for 
 #' Paternal_Contribution_Mode, Sample_Size, Fathers_Observed, Fathers_Actual, 
 #' and a Probability column that is the new conditional probability. The second
-#' data frame is wider so that the probability values are displayed by rows of 
-#' Paternal_Contribution_Mode and Fathers_Observed with columns for 
+#' data frame is wider so that the conditional probability values are displayed 
+#' by rows of Paternal_Contribution_Mode and Fathers_Observed with columns for 
 #' Fathers_Actual. 
 #' 
 #' @export
 #' 
 #' @importFrom dplyr %>%
 #' @importFrom tidyr pivot_wider
-
 #'
 #' @examples
 #' probabilities <- probability_id_fathers(hatchlings_mu = 100.58, 
 #'                                         hatchlings_sd = 22.61, 
-#'                                         max_males = 5, 
+#'                                         max_fathers = 5, 
 #'                                         n_sims = 1e5, 
 #'                                         n_sizes = c(32, 96), 
 #'                                         Paternity_contribution_mode = 
@@ -45,32 +44,32 @@
 #'                                                            'dominant70', 
 #'                                                            'dominant90', 
 #'                                                            'mixed_dominant'), 
-#'                                         min_nest_size = 10)
+#'                                         min_clutch_size = 10)
 #'      
-#' conditional_probs(probabilities)
+#' conditional_probabilities(probabilities)
 
-conditional_probs <- function(probabilities) {
+conditional_probabilities <- function(probabilities) {
   
-  # extract fertilization modes
+  # extract paternal contribution modes
   PCMs <- unique(probabilities$Paternal_Contribution_Mode)
   
-  # extract max number of males
-  max_males <- max(probabilities$Fathers_Actual)
+  # extract max number of fathers
+  max_fathers <- max(probabilities$Fathers_Actual)
   
   # extract sample sizes
   sample_sizes <- unique(probabilities$Sample_Size)  
   
   # initialize dataframe
-  conditional_probs <- data.frame()
+  conditional_probabilities <- data.frame()
   
-  # for each fertilization mode
+  # for each paternal contribution mode
   for (p in 1:length(PCMs)) {
     
     # for each sample size
     for (s in 1:length(sample_sizes)) {
       
       # create subset from data
-      # pull out fertilization mode and the sample size
+      # pull out paternal contribution mode and the sample size
       subset1 <- probabilities %>%
         filter(Paternal_Contribution_Mode == PCMs[p]) %>%
         filter(Sample_Size == sample_sizes[s])        
@@ -78,34 +77,34 @@ conditional_probs <- function(probabilities) {
       # initialize dataframe
       DF <- data.frame(Paternal_Contribution_Mode = PCMs[p], 
                        Sample_Size = sample_sizes[s], 
-                       Fathers_Observed = unlist(mapply(rep, 1:max_males, 
-                                                        max_males:1)), 
-                       Fathers_Actual = paste(unlist(mapply(seq, 1:max_males, 
-                                                      max_males)), 
+                       Fathers_Observed = unlist(mapply(rep, 1:max_fathers, 
+                                                        max_fathers:1)), 
+                       Fathers_Actual = paste(unlist(mapply(seq, 1:max_fathers, 
+                                                            max_fathers)), 
                                               ' Actual Father(s)', 
                                               sep = ''), 
-                       Probability = NA)
+                       Conditional_Probability = NA)
       
-      # probabilities of 1:max_males Fathers_Actual - assume equal
-      PA <- 1/max_males
+      # probabilities of 1:max_fathers Fathers_Actual - assume equal
+      PA <- 1/max_fathers
       
-      # probabilities of  1:max_males Fathers_Observed across all potential 
+      # probabilities of  1:max_fathers Fathers_Observed across all potential 
       # Fathers_Actual
-      probs <- subset1 %>% 
+      observed_probabilities <- subset1 %>% 
         group_by(Fathers_Observed) %>% 
         summarize(total = sum(Probability))
       
       # marginal probability for each number of Fathers_Actual
-      PBs <- probs$total / sum(subset1$Probability)
+      PBs <- observed_probabilities$total / sum(subset1$Probability)
       
       # index restart
       index <- 0
       
       # for i Fathers_Observed
-      for (i in 1:max_males) {
+      for (i in 1:max_fathers) {
         
         # for c Fathers_Actual
-        for (c in i:max_males) {
+        for (c in i:max_fathers) {
           
           # # if i = 1, then c = 1 doesn't exist, set to 0
           # if (c == 1) {
@@ -131,7 +130,7 @@ conditional_probs <- function(probabilities) {
           # print(index)
           
           # add the PAB to the data frame
-          DF$Probability[index] <- PAB
+          DF$Conditional_Probability[index] <- PAB
           
         }
         
@@ -141,15 +140,15 @@ conditional_probs <- function(probabilities) {
       if (sum(is.nan(DF$Probability)) > 1) {
         
         # replace values that are not numbers with NA
-        DF[which(is.nan(DF$Probability)), ]$Probability <- 0
+        DF[which(is.nan(DF$Conditional_Probability)), ]$Conditional_Probability <- 0
         
       }
       
       # round probability to 3 digits
-      DF$Probability <- round(DF$Probability, 3)
+      DF$Conditional_Probability <- round(DF$Conditional_Probability, 3)
       
       # add 
-      conditional_probs <- rbind(conditional_probs, DF)
+      conditional_probabilities <- rbind(conditional_probabilities, DF)
       
       
     }
@@ -157,28 +156,21 @@ conditional_probs <- function(probabilities) {
   }
   
   # save output
-  save(conditional_probs, file = 'output/conditional_probs.Rdata')
+  save(conditional_probabilities, 
+       file = 'output/conditional_probabilities.Rdata')
   
   # make it a less obnoxiously long table
-  prettier_conditional_probs <- conditional_probs %>%
-    pivot_wider(names_from = 'Fathers_Actual', values_from = 'Probability') %>%
+  prettier_conditional_probabilities <- conditional_probabilities %>%
+    pivot_wider(names_from = 'Fathers_Actual', 
+                values_from = 'Conditional_Probability') %>%
     arrange(Paternal_Contribution_Mode, Sample_Size, Fathers_Observed)
   
   # save output
-  save(prettier_conditional_probs, 
-       file = 'output/prettier_conditional_probs.Rdata')
+  save(prettier_conditional_probabilities, 
+       file = 'output/prettier_conditional_probabilities.Rdata')
   
-  output <- list(conditional_probs, prettier_conditional_probs)
+  output <- list(conditional_probabilities, prettier_conditional_probabilities)
   
   return(output)
   
 }
-
-setwd('~/Projects/multiple_paternity_power_analyses')
-
-library(dplyr)
-library(tidyr)
-
-load("~/Projects/multiple_paternity_power_analyses/output/probabilities.Rdata")
-
-conditional_probs(probabilities)
