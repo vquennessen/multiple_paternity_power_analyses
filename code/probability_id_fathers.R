@@ -5,11 +5,11 @@
 #' fathers, sample size, and paternal contribution mode. 
 #'
 #' @param hatchlings_mu numeric value, the mean number of hatchlings produced in
-#'    a nest. Default value is 100.58. 
+#'    a clutch. Default value is 100.58. 
 #' @param hatchlings_sd numeric value, the standard deviation of the number of 
-#'    hatchlings produced in a nest. Default value is 22.61. 
+#'    hatchlings produced in a clutch. Default value is 22.61. 
 #' @param max_fathers integer value, the maximum number of fathers that can 
-#'    fertilize the eggs from a single female. Default value is 5. 
+#'    fertilize the eggs from a single mother. Default value is 5. 
 #' @param n_sims integer value, the number of simulations to run. Default value 
 #'    is 1e6. 
 #' @param sample_sizes vector of integer values, the sample size(s) to collect. 
@@ -17,24 +17,32 @@
 #' @param paternal_contribution_modes vector of character values, the different 
 #'    paternal contribution modes to analyse. Default value is c('random', 
 #'    'exponential', 'dominant50', 'dominant70', 'dominant90', 'mixed_dominant'). 
-#' @param min_nest_size integer value, the number of hatchlings to be assigned 
-#'    to a nest where 0 or fewer was returned from the normal distribution based 
-#'    on hatchlings_mu and hatchlings_sd. Default value is 10. 
+#' @param min_clutch_size integer value, the number of hatchlings to be assigned 
+#'    to a clutch when 0 was returned from the normal distribution based on 
+#'    hatchlings_mu and hatchlings_sd. Default value is 10. 
 #'
 #' @return saves object with probabilities of identifying the number of actual 
 #'    fathers given paternal contribution mode, sample size, and number of 
 #'    fathers
 #' 
 #' @export
+#' 
+#' @importFrom dplyr %>%
+#' @importFrom tidyr pivot_wider
 #'
 #' @examples
-#' number_of_fathers(hatchlings_mu = 100.58, 
-#' hatchlings_sd = 22.61, max_fathers = 5, 
-#'                 n_sims = 100, 
-#'                 sample_sizes = c(32, 96), 
-#'                 paternal_contribution_modes = c('random', 'exponential', 
-#'                 'dominant50', 'dominant70', 'dominant90', 'mixed_dominant'), 
-#'                 min_nest_size = 10)
+#' probability_id_fathers(hatchlings_mu = 100.58, 
+#'                        hatchlings_sd = 22.61, 
+#'                        max_fathers = 5, 
+#'                        n_sims = 100, 
+#'                        sample_sizes = c(32, 96), 
+#'                        paternal_contribution_modes = c('random', 
+#'                                                        'exponential', 
+#'                                                        'dominant50', 
+#'                                                        'dominant70', 
+#'                                                        'dominant90', 
+#'                                                        'mixed_dominant'), 
+#'                        min_clutch_size = 10)
 
 probability_id_fathers <- function(hatchlings_mu = 100.58, 
                                    hatchlings_sd = 22.61, 
@@ -47,22 +55,9 @@ probability_id_fathers <- function(hatchlings_mu = 100.58,
                                                                    'dominant70', 
                                                                    'dominant90',
                                                                    'mixed_dominant'), 
-                                   min_nest_size = 10) 
+                                   min_clutch_size = 10) 
 
 {
-  
-  hatchlings_mu = 100.58
-  hatchlings_sd = 22.61
-  max_fathers = 5
-  n_sims = 100
-  sample_sizes = c(32, 96)
-  paternal_contribution_modes = c('random', 
-                                  'exponential', 
-                                  'dominant50', 
-                                  'dominant70', 
-                                  'dominant90',
-                                  'mixed_dominant')
-  min_nest_size = 10
   
   ###### Error handling ########################################################
   
@@ -71,29 +66,32 @@ probability_id_fathers <- function(hatchlings_mu = 100.58,
   if (!is.numeric(hatchlings_sd)) {stop('hatchlings_sd must be a numeric value.')}
   if (max_fathers %% 1 != 0) {stop('max_fathers must be an integer value.')}
   if (n_sims %% 1 != 0) {stop('n_sims must be an integer value.')}
-  if (sample_sizes %% 1 != 0) {stop('sample_sizes must be an integer value.')}
+  if (sum(sample_sizes %% 1 != 0) > 0) 
+    {stop('sample_sizes must be an integer value.')}
   if (!is.character(paternal_contribution_modes)) 
-  {stop('paternal_contribution_modes must be a character vector.')}
-  if (min_nest_size %% 1 != 0) {stop('min_nest_size must be an integer value.')}
+    {stop('paternal_contribution_modes must be a character vector.')}
+  if (min_clutch_size %% 1 != 0) 
+    {stop('min_clutch_size must be an integer value.')}
   
   # acceptable values
   if (hatchlings_mu <= 0) {stop('hatchlings_mu must be greater than 0.')}
   if (hatchlings_sd <= 0) {stop('hatchlings_sd must be greater than 0.')}
   if (max_fathers < 2) {stop('max_fathers must be greater than 1.')}
   if (n_sims <= 0) {stop('n_sims must be greater than 0.')}
-  if (sample_sizes <= 0) {stop('sample_sizes must be greater than 0.')}
-  if (sample_sizes > 96) {stop('sample_sizes must be less than 97.')}
-  if (! (paternal_contribution_modes) %in% c('random', 'exponential', 'dominant50', 
-                                             'dominant70', 'dominant90', 
-                                             'mixed_dominant')) 
-  {stop('paternal_contribution_modes given are not recognized')}
-  if (min_nest_size <= 0) {stop('min_nest_size must be greater than 0.')}
+  if (sum(sample_sizes <= 0) > 0) {stop('sample_sizes must be greater than 0.')}
+  if (sum(sample_sizes > 96) > 0) {stop('sample_sizes must be less than 97.')}
+  if (sum(!(paternal_contribution_modes) %in% c('random', 'exponential', 
+                                             'dominant50', 'dominant70', 
+                                             'dominant90', 
+                                             'mixed_dominant')) > 0) 
+    {stop('paternal_contribution_mode(s) given are not recognized')}
+  if (min_clutch_size <= 0) {stop('min_clutch_size must be greater than 0.')}
   
   
   # relational values
-  if(min_nest_size > (hatchlings_mu - 3*hatchlings_sd)) 
-  {stop('min_nest_size is too large given the distribution of hatchlings per 
-        nest.')}
+  if(min_clutch_size > (hatchlings_mu - 3*hatchlings_sd)) 
+    {stop('min_clutch_size is too large given the distribution of hatchlings per 
+        clutch.')}
   
   ##############################################################################
   
@@ -163,14 +161,14 @@ probability_id_fathers <- function(hatchlings_mu = 100.58,
         # pre-allocate vector of fathers observed (identified)
         fathers_observed <- rep(NA, n_sims)
         
-        # initialize nest sizes
+        # initialize clutch sizes
         # pull numbers of hatchlings from normal distribution
         n_hatchlings <- rnorm(n = n_sims, 
                               mean = hatchlings_mu, 
                               sd = hatchlings_sd)
         
-        # set any nests with 0 or fewer eggs to the minimum nest size
-        n_hatchlings[which(n_hatchlings <= 0)] <- min_nest_size
+        # set any clutches with 0 or fewer eggs to the minimum clutch size
+        n_hatchlings[which(n_hatchlings <= 0)] <- min_clutch_size
         
         # for each simulation
         for (j in 1:n_sims) {
@@ -188,7 +186,7 @@ probability_id_fathers <- function(hatchlings_mu = 100.58,
                            replace = TRUE,
                            prob = contributions)
           
-          # take sample of size j from nest (or the whole nest if < j)
+          # take sample of size j from clutch (or the whole clutch if < j)
           sample_size <- min(sample_sizes[s], length(clutch))
           samples <- sample(x = clutch, 
                             size = sample_size,
@@ -235,6 +233,26 @@ probability_id_fathers <- function(hatchlings_mu = 100.58,
   
   # save object
   save(probabilities, 
-       file = 'output/probabilities.Rdata')
+       file = paste('output/probabilities_', n_sims, '.Rdata', sep = ''))
+  
+  # make prettier object
+  probabilities_pretty <- probabilities %>%
+    pivot_wider(names_from = 'Fathers_Observed', values_from = 'Probability') %>%
+    rename('1 Observed Father' = `1`, 
+           '2 Observed Fathers' = `2`, 
+           '3 Observed Fathers' = `3`,
+           '4 Observed Fathers' = `4`,
+           '5 Observed Fathers' = `5`) %>%
+    arrange(Paternal_Contribution_Mode, Sample_Size, Fathers_Actual)
+  
+  # save prettier object
+  save(probabilities_pretty, 
+       file = paste('output/probabilities_pretty_', n_sims, '.Rdata', sep = ''))
+  
+  # make output
+  output <- list(probabilities, probabilities_pretty)
+  
+  # return output
+  return(output)
   
 }
