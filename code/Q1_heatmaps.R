@@ -8,31 +8,32 @@ library(viridis)
 library(tidyverse)
 
 # load probability dataframe
-load("~/Projects/multiple_paternity_power_analyses/output/probabilities1e+06.Rdata")
-# output called 'probs'
+load("~/Projects/multiple_paternity_power_analyses/output/proportion_correct_all_1e+05.Rdata")
+# output called 'proportion_correct_all'
+props <- proportion_correct_all
 
 # undo spread from hatchlings_to_sample.R
-# DF <- probs %>%
+# DF <- props %>%
 #   gather(key = 'Sample_Size', value = 'Probability', 3:4)
 
 # make factor variables
-probs$Males <- as.factor(probs$Males)
-probs$Fertilization_mode <- factor(probs$Fertilization_mode, 
+props$Fathers <- as.factor(props$Fathers)
+props$Paternal_Contribution_Mode <- factor(props$Paternal_Contribution_Mode, 
                                    levels = c('mixed_dominant', 'dominant90', 'dominant70',
                                               'dominant50', 'exponential', 'random'),
                                    labels = c('Mixed Dominant', 'Dominant 90', 'Dominant 70', 
                                               'Dominant 50', 'Exponential', 'Random'))
-probs$Sample_Size <- as.factor(probs$Sample_size)
-probs$Sample_Size <- as.factor(probs$Sample_size)
+props$Sample_Size <- as.factor(props$Sample_Size)
+props$Sample_Size <- as.factor(props$Sample_Size)
 
 # subset by sample size
-DF32 <- subset(probs, Sample_size == 32)
-DF96 <- subset(probs, Sample_size == 96)
+DF32 <- subset(props, Sample_Size == 32)
+DF96 <- subset(props, Sample_Size == 96)
 
 # start heatmap for sample size 32
-fig3 <- ggplot(data = DF32, aes(x = Males, 
-                                   y = Fertilization_mode, 
-                                   fill = Proportion_correct)) +
+fig3 <- ggplot(data = DF32, aes(x = Fathers, 
+                                   y = Paternal_Contribution_Mode, 
+                                   fill = Proportion_Correct)) +
   geom_tile(color = 'white',
             lwd = 1.5,
             linetype = 1) +
@@ -43,16 +44,9 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
-<<<<<<< HEAD
   guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
   xlab('Number of fathers') +
   ylab('Paternal contribution mode') +
-=======
-  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
-  xlab('Number of males') +
-  ylab('Paternity contribution mode') +
->>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
-  # ggtitle('Proportion correct with sample size 32 \n and marginal contributions') +
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
@@ -217,13 +211,13 @@ fig3 <- ggplot(data = DF32, aes(x = Males,
            lwd = 3) 
 
 ggsave(fig3, 
-     file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig3.png", 
+     file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure 3.pdf", 
      height = 6, width = 12)
 
 # start heatmap for sample size 96
-fig4 <- ggplot(data = DF96, aes(x = Males, 
-                                   y = Fertilization_mode, 
-                                   fill = Proportion_correct)) +
+figS1 <- ggplot(data = DF96, aes(x = Fathers, 
+                                   y = Paternal_Contribution_Mode, 
+                                   fill = Proportion_Correct)) +
   geom_tile(color = 'white',
             lwd = 1.5,
             linetype = 1) +
@@ -234,15 +228,9 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
                        breaks = c(0, 0.25, 0.5, 0.75, 1),
                        limits = c(0, 1),
                        na.value = 'gray') +
-<<<<<<< HEAD
   guides(fill = guide_colourbar(title = 'Proportion \n correct \n')) +
   xlab('Number of fathers') +
   ylab('Paternal contribution mode') +
-=======
-  guides(fill = guide_colourbar(title = 'Proportion \n correct')) +
-  xlab('Number of males') +
-  ylab('Paternity contribution mode') +
->>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
   theme(panel.background = element_blank()) +
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
@@ -407,11 +395,7 @@ fig4 <- ggplot(data = DF96, aes(x = Males,
   annotate("segment", x = 3.645, xend = 4.5, y = 0.75, yend = 0.75, colour = "white", 
            lwd = 3) 
 
-ggsave(fig4, 
-<<<<<<< HEAD
-       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figS1.png", 
-=======
-       file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/fig4.png", 
->>>>>>> 59aa434e1855a62de23a79242a5ed8937fbabab9
+ggsave(figS1, 
+       file = "C:/Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/figure S1.pdf", 
        height = 6, width = 12)
 

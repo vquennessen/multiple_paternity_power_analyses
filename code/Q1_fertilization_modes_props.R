@@ -5,12 +5,15 @@ library(patchwork)
 library(ggplot2)
 
 # load figures
-load("~/Projects/multiple_paternity_power_analyses/output/figures1e+06.Rdata")
+load("~/Projects/multiple_paternity_power_analyses/figures/1e+05.Rdata")
 
 # text sizes
 title_size <- 10
 axis_title_size <- 15
 axis_ticks_size <- 10
+
+theme(text = element_text(size = 20), 
+      axis.text = element_text(size = 15))
 
 # separate out individual figures
 A <- figs[[1]] + theme(legend.position = 'none') + xlab('') + 
@@ -74,7 +77,7 @@ patchwork2
 final_fig <- patchwork2 + plot_annotation(tag_levels = "a")
 
 # save
-ggsave(filename = 'fig2.png', 
+ggsave(filename = 'fig2.pdf', 
        path = 'C://Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/',
        plot = patchwork2, 
        width = 7, 
