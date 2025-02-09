@@ -30,14 +30,14 @@ fmode_titles <- c('Random', # 'Exponential',
                   'Dominant 90')
 
 ## figure number
-fig <- 'figure 4'
+# fig <- 'figure 4'
 # fig <- 'figure S2'
-# fig <- 'figure S3'
+fig <- 'figure S3'
 
 ## data title
-data_title <- 'no_polygyny'
+# data_title <- 'no_polygyny'
 # data_title <- 'uniform_Mprob_no_polygyny'
-# data_title <- 'uniform_Mprob_and_Fprob'
+data_title <- 'uniform_Mprob_and_Fprob'
 
 # sample sizes
 sample_sizes <- c(32, 96)
@@ -139,7 +139,7 @@ fig2 <- ggplot(data = DF, aes(x = PropNests,
   geom_text(aes(x = 0.125, y = 0.45, 
                 label = label, 
                 group = label), 
-            size = 5, colour = 'white',
+            size = 7, colour = 'white',
             inherit.aes = FALSE) +
   facet_grid(rows = vars(Fertilization_Mode), cols = vars(Sample_Label)) +
   theme(panel.spacing.x = unit(1.5, "lines")) +
@@ -151,7 +151,7 @@ fig2
 
 # save contour plot
 ggsave(fig2,
-       file = paste('C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/', 
-       fig, '_', data_title, '.pdf', sep = ''), 
+       file = paste('C://Users/Vic//Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/', 
+       fig, '.pdf', sep = ''), 
        height = 6, width = 12)
 
