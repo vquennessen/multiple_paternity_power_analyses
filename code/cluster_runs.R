@@ -4,10 +4,13 @@ setwd('/home/quennessenv/multiple_paternity_power_analyses')
 
 # load libraries
 library(dplyr)
+library(tidyr)
 library(parallel)
+library(remotes)
+remotes::install_github('vquennessen/MultiplePaternityPowerAnalyses')
+library(MultiplePaternityPowerAnalyses)
 
 # source function
-source('code/clutches_to_sample.R')
 source('code/run_Q2.R')
 
 # load probabilities object
@@ -21,10 +24,15 @@ paternal_contribution_modes <- c('random',
                                  'dominant50', 
                                  'dominant70', 
                                  'dominant90', 
-                                 'mixed_dominant')     
+                                 'mixed_dominant')
 
-#make dataframe of all combinations of arguments
-DF <- expand.grid(sample_sizes, paternal_contribution_modes)
+scenarios <- c('base_Fprob_no_Mprob', 'uniform_Fprob_no_Mprob', 
+               'base_Fprob_uniform_Mprob', 'uniform_Fprob_uniform_Mprob',
+               'base_Fprob_base_Mprob', 'uniform_Fprob_base_Mprob')
+
+
+# make dataframe of all combinations of arguments
+DF <- expand.grid(sample_sizes, paternal_contribution_modes, scenarios)
 
 # initialize empty arguments list
 arguments <- list()
