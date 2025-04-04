@@ -94,7 +94,7 @@ run_Q2 <- function(arguments) {
   save(output, 
        file = paste('output/',
                     scenario, 
-                    '/', 
+                    '-', 
                     scenario, 
                     '_',
                     sample_size, 
