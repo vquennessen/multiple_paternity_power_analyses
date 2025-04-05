@@ -6,48 +6,48 @@ run_Q2 <- function(arguments) {
   sample_size                 <- arguments$Var1
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
-  nsims                       <- 10000
+  nsims                       <- 100
   
   # model parameters
   pop_size <- 100                               # total population size
   
   # Fprob and Mprob based on scenario
-  if (scenario == 'base_Fprob_no_Mprob') {
+  if (scenario == 'base_F_no_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(1)
     
   } 
   
-    if (scenario == 'base_Fprob_uniform_Mprob') {
+    if (scenario == 'base_F_uniform_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     
     }
   
-  if (scenario == 'base_Fprob_base_Mprob') {
+  if (scenario == 'base_F_base_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     
   }
   
-  if (scenario == 'uniform_Fprob_no_Mprob') {
+  if (scenario == 'uniform_F_no_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(1)
     
   } 
   
-  if (scenario == 'uniform_Fprob_uniform_Mprob') {
+  if (scenario == 'uniform_F_uniform_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     
   }
   
-  if (scenario == 'uniform_Fprob_base_Mprob') {
+  if (scenario == 'uniform_F_base_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
@@ -94,9 +94,9 @@ run_Q2 <- function(arguments) {
   save(output, 
        file = paste('../output/',
                     scenario, 
-                    '-', 
+                    '/', 
                     scenario, 
-                    '/',
+                    '_',
                     sample_size, 
                     'samples_',
                     paternal_contribution_mode, 

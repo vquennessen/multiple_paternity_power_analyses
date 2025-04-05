@@ -26,9 +26,9 @@ paternal_contribution_modes <- c('random',
                                  'dominant90', 
                                  'mixed_dominant')
 
-scenarios <- c('base_Fprob_no_Mprob', 'uniform_Fprob_no_Mprob', 
-               'base_Fprob_uniform_Mprob', 'uniform_Fprob_uniform_Mprob',
-               'base_Fprob_base_Mprob', 'uniform_Fprob_base_Mprob')
+scenarios <- c('base_F_no_M', 'uniform_F_no_M', 
+               'base_F_uniform_M', 'uniform_F_uniform_M',
+               'base_F_base_M', 'uniform_F_base_M')
 
 
 # make dataframe of all combinations of arguments
