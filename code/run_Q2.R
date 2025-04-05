@@ -92,11 +92,11 @@ run_Q2 <- function(arguments) {
   
   # save output
   save(output, 
-       file = paste('output/',
+       file = paste('../output/',
                     scenario, 
                     '-', 
                     scenario, 
-                    '_',
+                    '/',
                     sample_size, 
                     'samples_',
                     paternal_contribution_mode, 
