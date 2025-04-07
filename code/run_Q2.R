@@ -6,7 +6,7 @@ run_Q2 <- function(arguments) {
   sample_size                 <- arguments$Var1
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
-  nsims                       <- 100
+  nsims                       <- 10000
   
   # model parameters
   pop_size <- 100                               # total population size
@@ -64,7 +64,7 @@ run_Q2 <- function(arguments) {
     dplyr::filter(Paternal_Contribution_Mode == paternal_contribution_mode)
   
   # write to progress text file
-  update <- paste(Sys.time(), 
+  update <- paste(lubridate::now(), 
                   ' - ',
                   scenario,
                   ' - sample size ', 
@@ -73,7 +73,7 @@ run_Q2 <- function(arguments) {
                   paternal_contribution_mode, 
                   ' - ', 
                   nsims, 
-                  ' sims', 
+                  ' sims - started!', 
                   sep = '')
   
   write(update, file = 'progress.txt', append = TRUE)
@@ -92,7 +92,7 @@ run_Q2 <- function(arguments) {
   
   # save output
   save(output, 
-       file = paste('../output/',
+       file = paste('output/',
                     scenario, 
                     '/', 
                     scenario, 
