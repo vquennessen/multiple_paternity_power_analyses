@@ -12,42 +12,42 @@ run_Q2 <- function(arguments) {
   pop_size <- 100                               # total population size
   
   # Fprob and Mprob based on scenario
-  if (scenario == 'base_Fprob_no_Mprob') {
+  if (scenario == 'base_F_no_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(1)
     
   } 
   
-    if (scenario == 'base_Fprob_uniform_Mprob') {
+    if (scenario == 'base_F_uniform_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     
     }
   
-  if (scenario == 'base_Fprob_base_Mprob') {
+  if (scenario == 'base_F_base_M') {
     
     Fprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
     
   }
   
-  if (scenario == 'uniform_Fprob_no_Mprob') {
+  if (scenario == 'uniform_F_no_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(1)
     
   } 
   
-  if (scenario == 'uniform_Fprob_uniform_Mprob') {
+  if (scenario == 'uniform_F_uniform_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     
   }
   
-  if (scenario == 'uniform_Fprob_base_Mprob') {
+  if (scenario == 'uniform_F_base_M') {
     
     Fprob <- c(0.2, 0.2, 0.2, 0.2, 0.2)   
     Mprob <- c(0.463, 0.318, 0.157, 0.034, 0.028)
@@ -64,7 +64,7 @@ run_Q2 <- function(arguments) {
     dplyr::filter(Paternal_Contribution_Mode == paternal_contribution_mode)
   
   # write to progress text file
-  update <- paste(Sys.time(), 
+  update <- paste(lubridate::now(), 
                   ' - ',
                   scenario,
                   ' - sample size ', 
@@ -73,7 +73,7 @@ run_Q2 <- function(arguments) {
                   paternal_contribution_mode, 
                   ' - ', 
                   nsims, 
-                  ' sims', 
+                  ' sims - started!', 
                   sep = '')
   
   write(update, file = 'progress.txt', append = TRUE)
