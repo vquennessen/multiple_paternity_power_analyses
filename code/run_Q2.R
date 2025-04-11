@@ -6,7 +6,7 @@ run_Q2 <- function(arguments) {
   sample_size                 <- arguments$Var1
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
-  nsims                       <- 10000
+  nsims                       <- 1000
   
   # model parameters
   pop_size <- 100                               # total population size
