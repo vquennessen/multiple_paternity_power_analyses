@@ -20,11 +20,11 @@ load('output/proportion_correct_all_1e+05.Rdata')
 sample_sizes <- c(32, 96)                     
 
 paternal_contribution_modes <- c('random', 
-                                 'exponential', 
-                                 'dominant50', 
-                                 'dominant70', 
-                                 'dominant90', 
-                                 'mixed_dominant')
+                                 # 'exponential', 
+                                 # 'dominant50', 
+                                 # 'dominant70', 
+                                 'dominant90') #, 
+                                 # 'mixed_dominant')
 
 scenarios <- c('base_F_no_M', 
                'uniform_F_no_M', 
