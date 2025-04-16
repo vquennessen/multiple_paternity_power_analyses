@@ -6,7 +6,7 @@ run_Q2 <- function(arguments) {
   sample_size                 <- arguments$Var1
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
-  nsims                       <- 1000
+  n_sims                      <- 1000
   
   # model parameters
   pop_size <- 1000                               # total population size
@@ -79,7 +79,7 @@ run_Q2 <- function(arguments) {
   write(update, file = 'progress.txt', append = TRUE)
   
   # run sample_clutches
-  output <- clutches_to_sample(nsims, 
+  output <- clutches_to_sample(n_sims, 
                                pop_size, 
                                sample_size, 
                                paternal_contribution_mode,
