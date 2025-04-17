@@ -33,8 +33,13 @@ scenarios <- c('base_F_no_M',
                'base_F_base_M', 
                'uniform_F_base_M')
 
+n_sims <- c(1e+04)
+
 # make dataframe of all combinations of arguments
-DF <- expand.grid(sample_sizes, paternal_contribution_modes, scenarios)
+DF <- expand.grid(sample_sizes, 
+                  paternal_contribution_modes, 
+                  scenarios, 
+                  n_sims)
 
 # initialize empty arguments list
 arguments <- list()

@@ -98,6 +98,9 @@ DF$Sample_Label[DF$Sample_Size == 96] <- 'Sample Size 96'
 DF$M_title <- factor(DF$M_title, 
                      levels = M_titles, 
                      labels = M_titles)
+DF$bin <- cut(DF$Proportion, 
+              breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1), 
+              include_lowest = TRUE)
 
 ################################################################################
 ##### contour plots ############################################################
@@ -196,15 +199,15 @@ DF96 <- DF %>%
 
 fig4_random_overlap <- ggplot(data = DF32, aes(x = PropClutches, 
                                               y = OSR, 
-                                              z = Proportion)) +
+                                              z = Proportion, 
+                                              colour = bin)) +
   geom_contour_filled(bins = 5) +
   geom_contour(data = DF96, 
                aes(x = PropClutches, 
                    y = OSR, 
                    z = Proportion), 
                bins = 5, 
-               lwd = 1, 
-               col = 'black') +
+               lwd = 1) +
   xlab('Proportion of clutches sampled') +
   ylab('Operational sex ratio') +
   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
@@ -296,17 +299,22 @@ DFrandom <- DF %>%
   filter(Sample_Size == 32) %>%
   filter(Paternal_Contribution_Mode == 'Random')
 
-fig4_samplesize32_overlap <- ggplot(data = DFrandom, aes(x = PropClutches, 
-                                                   y = OSR, 
-                                                   z = Proportion)) +
-  geom_contour_filled(bins = 5) +
+colors <- viridis(5)
+
+fig4_samplesize32_overlap <- ggplot(data = DFrandom, 
+                                    aes(x = PropClutches,
+                                        y = OSR, 
+                                        z = Proportion)) +
+  # geom_contour_filled(bins = 5, 
+  #                     alpha = 0.75) +
   geom_contour(data = DFdominant90, 
-               aes(x = PropClutches, 
-                   y = OSR, 
-                   z = Proportion), 
+               # aes(x = PropClutches, 
+               #     y = OSR, 
+               #     z = Proportion), 
                bins = 5, 
-               lwd = 1, 
-               col = 'black') +
+               lwd = 1,
+               alpha = 1) +
+  scale_color_manual(values = colors) +
   xlab('Proportion of clutches sampled') +
   ylab('Operational sex ratio') +
   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
@@ -329,6 +337,8 @@ fig4_samplesize32_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
   ggtitle('Sample size 32 random and dominant 90')
 
+fig4_samplesize32_overlap
+
 fig <- 'fig4_samplesize32_overlap'
 
 # save contour plot
@@ -341,12 +351,20 @@ ggsave(fig4_samplesize32_overlap,
 
 to_plot <- DF %>%
   filter(Paternal_Contribution_Mode %in% c('Random', 'Dominant 90')) %>%
-  filter(Scenario == 'uniform_F_no_M')
+  filter(Scenario == 'uniform_F_no_M') %>%
+  filter(OSR <= 0.5) %>%
+  mutate(bin = cut(Proportion, 
+                   # breaks = c(-Inf, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1), 
+                   breaks = c(-Inf, 0.2, 0.4, 0.6, 0.8, Inf), 
+                   include_lowest = TRUE))
 
 ggplot(data = to_plot, 
        aes(x = PropClutches, 
            y = OSR, 
-           z = Proportion)) +
+           z = Proportion
+           # fill = bin
+           )) +
+  # geom_tile() +
   geom_contour_filled(bins = 5) +
   facet_grid(rows = vars(Paternal_Contribution_Mode), 
              cols = vars(Sample_Size))

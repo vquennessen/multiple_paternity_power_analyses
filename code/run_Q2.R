@@ -6,10 +6,10 @@ run_Q2 <- function(arguments) {
   sample_size                 <- arguments$Var1
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
-  n_sims                      <- 1000
+  n_sims                      <- arguments$Var4
   
   # model parameters
-  pop_size <- 1000                               # total population size
+  pop_size <- 100                               # total population size
   
   # Fprob and Mprob based on scenario
   if (scenario == 'base_F_no_M') {
@@ -72,7 +72,7 @@ run_Q2 <- function(arguments) {
                   ' - ', 
                   paternal_contribution_mode, 
                   ' - ', 
-                  nsims, 
+                  n_sims, 
                   ' sims - started!', 
                   sep = '')
   
@@ -101,7 +101,7 @@ run_Q2 <- function(arguments) {
                     'samples_',
                     paternal_contribution_mode, 
                     '_', 
-                    nsims, 
+                    n_sims, 
                     'sims.Rdata', 
                     sep = ''))
   
