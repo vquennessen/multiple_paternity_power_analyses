@@ -1,1 +1,54 @@
-2025-04-03 17:26:06.720614 - uniform_Fprob_no_Mprob - sample size 32 - random - 100 sims
+2025-04-17 12:31:15 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.05 - PC 0.05 - done!
+2025-04-17 12:32:12 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.05 - PC 1 - done!
+
+2025-04-17 12:32:18 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.1 - PC 0.05 - done!
+2025-04-17 12:34:15 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.1 - PC 1 - done!
+
+2025-04-17 12:34:25 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.15 - PC 0.05 - done!
+2025-04-17 12:37:12 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.15 - PC 1 - done!
+
+2025-04-17 12:37:23 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.2 - PC 0.05 - done!
+2025-04-17 12:40:50 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.2 - PC 1 - done!
+
+2025-04-17 12:41:04 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.25 - PC 0.05 - done!
+2025-04-17 12:45:25 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.25 - PC 1 - done!
+
+2025-04-17 12:45:42 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.05 - done!
+2025-04-17 12:45:58 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.1 - done!
+2025-04-17 12:46:14 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.15 - done!
+2025-04-17 12:46:30 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.2 - done!
+2025-04-17 12:46:48 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.25 - done!
+2025-04-17 12:47:04 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.3 - done!
+2025-04-17 12:47:21 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.35 - done!
+2025-04-17 12:47:36 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.4 - done!
+2025-04-17 12:47:52 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.45 - done!
+2025-04-17 12:48:08 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.5 - done!
+2025-04-17 12:48:24 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.55 - done!
+2025-04-17 12:48:42 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.6 - done!
+2025-04-17 12:48:58 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.65 - done!
+2025-04-17 12:49:15 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.7 - done!
+2025-04-17 12:49:33 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.75 - done!
+2025-04-17 12:49:50 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.8 - done!
+2025-04-17 12:50:08 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.85 - done!
+2025-04-17 12:50:25 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.9 - done!
+2025-04-17 12:50:42 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 0.95 - done!
+2025-04-17 12:51:00 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.3 - PC 1 - done!
+2025-04-17 12:51:18 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.05 - done!
+2025-04-17 12:51:39 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.1 - done!
+2025-04-17 12:51:59 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.15 - done!
+2025-04-17 12:52:19 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.2 - done!
+2025-04-17 12:52:39 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.25 - done!
+2025-04-17 12:52:59 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.3 - done!
+2025-04-17 12:53:19 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.35 - done!
+2025-04-17 12:53:50 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.4 - done!
+2025-04-17 12:54:11 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.45 - done!
+2025-04-17 12:54:32 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.5 - done!
+2025-04-17 12:54:52 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.55 - done!
+2025-04-17 12:55:13 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.6 - done!
+2025-04-17 15:55:40 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.65 - done!
+2025-04-17 16:08:58 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.7 - done!
+2025-04-17 16:09:34 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.75 - done!
+2025-04-17 16:09:54 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.8 - done!
+2025-04-17 16:10:30 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.85 - done!
+2025-04-17 16:11:06 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.9 - done!
+2025-04-17 16:11:53 - uniform_F_no_M - sample size 32 - dominant90 - 100 sims - OSR 0.35 - PC 0.95 - done!
