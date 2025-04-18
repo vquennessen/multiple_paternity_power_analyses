@@ -54,12 +54,15 @@ run_Q2 <- function(arguments) {
     
   }  
 
+  # average and sd numbers of clutches per mother
+  clutches_mu <- 4.95
+  clutches_sd <- 2.09
   
-  clutches_mu <- 4.95                              # average # of nests per F
-  clutches_sd <- 2.09                              # sd # of nests per F
+  # load probabilities object
+  load('output/probabilities.Rda')
   
   # pull out probabilities of IDing different numbers of fathers
-  prop_correct <- proportion_correct_all %>%
+  probs_id <- probabilities %>%
     dplyr::filter(Sample_Size == sample_size) %>%
     dplyr::filter(Paternal_Contribution_Mode == paternal_contribution_mode)
   
@@ -87,7 +90,7 @@ run_Q2 <- function(arguments) {
                                Mprob, 
                                clutches_mu, 
                                clutches_sd, 
-                               prop_correct, 
+                               probs_id, 
                                scenario)
   
   # save output

@@ -13,9 +13,6 @@ library(MultiplePaternityPowerAnalyses)
 # source function
 source('code/run_Q2.R')
 
-# load probabilities object
-load('output/proportion_correct_all_1e+05.Rdata')
-
 # model parameters
 sample_sizes <- c(32, 96)                     
 
@@ -33,7 +30,21 @@ scenarios <- c('base_F_no_M',
                'base_F_base_M', 
                'uniform_F_base_M')
 
-n_sims <- c(1e+05)
+n_sims <- c(1e+02)
+
+# # create probabilities object
+# probabilities <- probability_id_fathers(hatchlings_mu = 100.58,
+#                                         hatchlings_sd = 22.61,
+#                                         max_fathers = 5,
+#                                         n_sims = 1e+07,
+#                                         sample_sizes = sample_sizes,
+#                                         paternal_contribution_modes =
+#                                           paternal_contribution_modes,
+#                                         min_clutch_size = 10)[[1]]
+# 
+# # save probabilities object
+# save(probabilities, 
+#      file = 'output/probabilities.Rda')
 
 # make dataframe of all combinations of arguments
 DF <- expand.grid(sample_sizes, 
@@ -50,8 +61,3 @@ for (i in 1:nrow(DF)) {
   arguments[i] <- list(DF[i, ])
   
 }
-
-# ########### do the runs ########################################################
-# mclapply(X = arguments, 
-#          FUN = run_Q2, 
-#          mc.cores = 50)
