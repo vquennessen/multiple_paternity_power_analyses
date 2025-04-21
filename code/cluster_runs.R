@@ -17,11 +17,11 @@ source('code/run_Q2.R')
 sample_sizes <- c(32, 96)                     
 
 paternal_contribution_modes <- c( 
-                                 # 'random', 
-                                 'exponential', 
-                                 'dominant50', 
-                                 'dominant70', 
-                                 # 'dominant90', 
+                                 'random',
+                                 'exponential',
+                                 'dominant50',
+                                 'dominant70',
+                                 'dominant90',
                                  'mixed_dominant'
                                  )
 
@@ -29,8 +29,9 @@ scenarios <- c('base_F_no_M',
                'uniform_F_no_M', 
                'base_F_uniform_M', 
                'uniform_F_uniform_M',
-               'base_F_base_M', 
-               'uniform_F_base_M')
+               'base_F_base_M',
+               'uniform_F_base_M'
+               )
 
 n_sims <- c(1e+03)
 

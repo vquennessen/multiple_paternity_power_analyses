@@ -12,7 +12,7 @@ library(magrittr)
 
 ##### model parameters #########################################################
 
-computer <- 'laptop'
+computer <- 'desktop'
 # computer <- 'desktop'
 # computer <- 'cluster'
 
@@ -33,7 +33,7 @@ pcmode_titles <- c('Random', # 'Exponential',
 ## data title
 # data_title <- 'no_polygyny'
 # data_title <- 'uniform_Mprob_no_polygyny'
-folder <- '2025_04_17_N100_1000sims'
+folder <- '2025_04_19_N100_100sims_test'
 data_titles <- c('base_F_base_M', 
                  'base_F_uniform_M', 
                  'base_F_no_M', 
@@ -51,7 +51,7 @@ M_titles <- c('Decreasing polygyny', 'Uniform polygyny', 'No polygyny',
 sample_sizes <- c(32, 96)
 
 # number of simulations
-nsims <- 1e+03
+nsims <- 1e+02
 
 # dimensions
 nS <- length(sample_sizes)
@@ -148,7 +148,7 @@ fig4_random_32 <- DF %>%
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
   ggtitle('Random PCM Sample Size 32')
 
-fig <- 'fig4_random_32'
+fig4_random_32
 
 # save contour plot
 ggsave(fig4_random_32,
@@ -188,7 +188,7 @@ fig4_random_96 <- DF %>%
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
   ggtitle('Random PCM Sample Size 96')
 
-fig <- 'fig4_random_96'
+fig4_random_96
 
 # save contour plot
 ggsave(fig4_random_96,
@@ -218,7 +218,7 @@ fig4_random_overlap <- ggplot(data = DF32, aes(x = PropClutches,
                aes(x = PropClutches,
                    y = OSR,
                    z = Proportion, 
-                   color = stat(level)),
+                   color = after_stat(level)),
                bins = num_bins, 
                lwd = 1,
                alpha = 1) +
@@ -368,35 +368,52 @@ ggsave(fig4_samplesize32_overlap,
 
 ##### why are they all the same??? #############################################
 
+load("~/Projects/multiple_paternity_power_analyses/output/random_32.Rda")
+random_32$PCM <- 'Random'
+random_32$sample_size <- 32
 
+load("~/Projects/multiple_paternity_power_analyses/output/random_96.Rda")
+random_96$PCM <- 'Random'
+random_96$sample_size <- 96
+
+load("~/Projects/multiple_paternity_power_analyses/output/dominant90_32.Rda")
+dominant90_32$PCM <- 'Dominant 90'
+dominant90_32$sample_size <- 32
+
+load("~/Projects/multiple_paternity_power_analyses/output/dominant90_96.Rda")
+dominant90_96$PCM <- 'Dominant 90'
+dominant90_96$sample_size <- 96
+
+to_plot <- rbind(random_32, random_96, dominant90_32, dominant90_96)
 
 for (d in 1:length(data_titles)) {
   
-  to_plot <- DF %>%
-    filter(Paternal_Contribution_Mode %in% c('Random', 'Dominant 90')) %>%
-    # filter(OSR <= 0.5) %>%
-    filter(Scenario == data_titles[d]) %>%
-    mutate(bin = cut(Proportion,
-                     breaks = seq(from = -0.0001, to = 1, length = 6),
-                     include_lowest = TRUE)) %>%
+  to_plot %>%
+  # <- DF %>%
+  #   filter(Paternal_Contribution_Mode %in% c('Random', 'Dominant 90')) %>%
+  #   # filter(OSR <= 0.5) %>%
+  #   filter(Scenario == data_titles[d]) %>%
+  #   mutate(bin = cut(Proportion,
+  #                    breaks = seq(from = -0.0001, to = 1, length = 6),
+  #                    include_lowest = TRUE)) %>%
     # mutate(contour = as.numeric(sub("(\\(|\\[)([^,]+),.*", "\\2", 
     #                                 levels(bin)))) %>%
     ggplot(aes(x = PropClutches, 
                y = OSR, 
                z = Proportion,
-               fill = bin
+               fill = Proportion
     )) +
     geom_tile() +
-    # geom_contour_filled(bins = 5, 
+    # geom_contour_filled(bins = 5,
     #                     alpha = 0.5) +
     # geom_contour(aes(z = Proportion, color = stat(level)), 
     #              bins = 5, 
     #              lwd = 1) +
     #              # breaks = seq(from = 0, to = 1, length = 15)) +
     scale_fill_viridis_c() +
-    facet_grid(rows = vars(Paternal_Contribution_Mode), 
-               cols = vars(Sample_Size)) +
-    ggtitle(data_titles[d])
+    facet_grid(rows = vars(PCM), 
+               cols = vars(sample_size)) +
+    ggtitle('uniform F no M')
   
   print(to_plot)
   
