@@ -21,7 +21,7 @@ paternal_contribution_modes <- c(
                                  # 'exponential',
                                  # 'dominant50',
                                  # 'dominant70',
-                                 # 'mixed_dominant',
+                                 # 'mixed_dominant'
                                  'dominant90'
                                  )
 
@@ -33,7 +33,7 @@ scenarios <- c('base_F_no_M',
                'uniform_F_base_M'
                )
 
-n_sims <- c(1e+03)
+n_sims <- c(1e+04)
 
 # create probabilities object
 probabilities <- probability_id_fathers(hatchlings_mu = 100.58,

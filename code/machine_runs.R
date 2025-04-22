@@ -18,11 +18,11 @@ load('data/number_of_males.Rdata')
 sample_sizes <- c(32, 96)                   # sample sizes of hatchlings
 # sample_sizes <- c(32)                     # sample sizes of hatchlings
 
-fertilization_modes <- c('random',            # fertilization modes
+fertilization_modes <- c(# 'random',            # fertilization modes
                          'exponential',
                          'dominant50',
                          'dominant70',
-                         'dominant90',
+                         # 'dominant90',
                          'mixed_dominant')
 
 # fertilization_modes <- c('random')  
