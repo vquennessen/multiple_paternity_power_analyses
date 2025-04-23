@@ -12,8 +12,8 @@ library(magrittr)
 
 ##### model parameters #########################################################
 
-computer <- 'laptop'
-# computer <- 'desktop'
+# computer <- 'laptop'
+computer <- 'desktop'
 # computer <- 'cluster'
 
 ## paternal contribution modes
@@ -36,14 +36,17 @@ pcmode_titles <- c('Random', # 'Exponential',
 nsims <- 1000
 sample_sizes <- c(32, 96)
 
-folder <- paste('2025_04_19_N100_', nsims, 'sims', sep = '')
+scenarios <- c('2025_04_19_N100', '2025_04_22_N200', 
+               '2025_04_19_N1000')
 
-data_titles <- c('base_F_base_M', 
-                 'base_F_uniform_M', 
-                 'base_F_no_M', 
-                 'uniform_F_base_M', 
-                 'uniform_F_uniform_M', 
-                 'uniform_F_no_M')
+folders <- paste(scenarios, '_', nsims, 'sims', sep = '')
+
+mating_systems <- c('base_F_base_M', 
+                    'base_F_uniform_M', 
+                    'base_F_no_M', 
+                    'uniform_F_base_M', 
+                    'uniform_F_uniform_M', 
+                    'uniform_F_no_M')
 
 F_titles <- c('Decreasing polyandry', 'Decreasing polyandry', 'Decreasing polyandry', 
               'Uniform polyandry', 'Uniform polyandry', 'Uniform polyandry')
@@ -56,35 +59,41 @@ M_titles <- c('Decreasing polygyny', 'Uniform polygyny', 'No polygyny',
 # initialize dataframe
 DF <- data.frame()
 
-for (d in 1:length(data_titles)) {
+for (f in 1:length(folders)) {
   
-  # for each fertilization mode
-  for (pc in 1:length(pcmodes)) {
+  for (ms in 1:length(mating_systems)) {
     
-    pcmode <- pcmodes[pc]
-    pcmode_title <- pcmode_titles[pc]
-    
-    for (s in 1:length(sample_sizes)) {
+    # for each fertilization mode
+    for (pc in 1:length(pcmodes)) {
       
-      sample_size <- sample_sizes[s]
+      pcmode <- pcmodes[pc]
+      pcmode_title <- pcmode_titles[pc]
       
-      # load data
-      load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
-                 folder, '/', data_titles[d], '/', data_titles[d], '_', 
-                 sample_size, 'samples_', pcmode, '_', nsims, 'sims.Rdata', 
-                 sep = ''))
-      
-      DF1 <- output
-      
-      # fertilization mode and sample size vectors
-      DF1$Paternal_Contribution_Mode <- factor(rep(pcmode_title, nrow(DF1)))
-      DF1$Sample_Size <- factor(rep(sample_size, nrow(DF1)))
-      DF1$Scenario <- data_titles[d]
-      DF1$F_title <- F_titles[d]
-      DF1$M_title <- M_titles[d]
-      
-      # add new scenario to DF
-      DF <- rbind(DF, DF1)
+      for (s in 1:length(sample_sizes)) {
+        
+        sample_size <- sample_sizes[s]
+        
+        # load data
+        load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
+                   folders[f], '/', mating_systems[ms], '/', mating_systems[ms], 
+                   '_', sample_size, 'samples_', pcmode, '_', nsims, 
+                   'sims.Rdata', sep = ''))
+        
+        DF1 <- output
+        
+        # fertilization mode and sample size vectors
+        DF1$Paternal_Contribution_Mode <- pcmode_titles[pc]
+        DF1$Sample_Size <- sample_sizes[s]
+        DF1$Mating_system <- mating_systems[ms]
+        DF1$F_title <- F_titles[ms]
+        DF1$M_title <- M_titles[ms]
+        DF1$Pop_size <- substr(scenarios[f], 13, 16)
+        DF1$Scenario <- scenarios[f]
+        
+        # add new scenario to DF
+        DF <- rbind(DF, DF1)
+        
+      }
       
     }
     
@@ -464,3 +473,57 @@ ggsave(fig4_samplesize96_overlap,
 # }
 # 
 # 
+
+
+##### different population sizes ###############################################
+
+pop_sizes <- DF %>%
+  filter(Paternal_Contribution_Mode == 'Random') %>%
+  filter(Sample_Size == 32) %>%
+  filter(Mating_system == 'base_F_base_M') %>%
+  mutate(label = case_when(Pop_size == 100 ~ '(a)', 
+                           Pop_size == 200 ~ '(b)', 
+                           Pop_size == 1000 ~ '(c)'))
+
+pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
+                             levels = c(100, 200, 1000), 
+                             labels = c('Population size 100', 
+                                        'Population size 200',
+                                        'Population size 1000'))
+         
+
+fig4_pop_sizes <- ggplot(data = pop_sizes, 
+                                    aes(x = PropClutches,
+                                        y = OSR, 
+                                        z = Proportion)) +
+  geom_contour_filled(bins = n_distinct(DF$bin, na.rm = TRUE)) +
+  # scale_color_viridis_d() +
+  xlab('Proportion of clutches sampled') +
+  ylab('Operational sex ratio') +
+  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+  labs(fill = 'Proportion \n correct \n') +
+  guides(fill = guide_legend(reverse = TRUE)) + 
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank()) +
+  theme(text = element_text(size = 20), 
+        axis.text = element_text(size = 15)) +
+  geom_text(aes(x = 0.15, 
+                y = 0.85, 
+                label = label, 
+                group = label), 
+            size = 7, colour = 'white',
+            inherit.aes = FALSE) +
+  facet_grid(rows = vars(Pop_size)) +
+  theme(panel.spacing.x = unit(1.5, "lines")) +
+  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+  ggtitle('Random 32 base_F_base_M')
+
+fig4_pop_sizes
+fig_name <- "fig4_pop_sizes"
+
+# save contour plot
+ggsave(fig4_pop_sizes,
+       file = paste('figures/', fig_name, '.png', sep = ''), 
+       height = 10, width = 6.5)
