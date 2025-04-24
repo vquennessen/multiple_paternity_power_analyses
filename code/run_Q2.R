@@ -7,10 +7,9 @@ run_Q2 <- function(arguments) {
   paternal_contribution_mode  <- arguments$Var2
   scenario                    <- arguments$Var3
   n_sims                      <- arguments$Var4
-  
-  # model parameters
-  pop_size <- 200                               # total population size
-  
+  pop_size                    <- arguments$Var5
+  minimum_id                  <- arguments$Var6
+
   # Fprob and Mprob based on scenario
   if (scenario == 'base_F_no_M') {
     
@@ -68,15 +67,10 @@ run_Q2 <- function(arguments) {
   
   # write to progress text file
   update <- paste(lubridate::now(), 
-                  ' - ',
-                  scenario,
-                  ' - sample size ', 
-                  sample_size, 
-                  ' - ', 
-                  paternal_contribution_mode, 
-                  ' - ', 
-                  n_sims, 
-                  ' sims - started!', 
+                  ' - ', scenario, ' - N', pop_size, 
+                  ' - sample size ', sample_size, ' - ', 
+                  paternal_contribution_mode, ' - ', 
+                  n_sims, ' sims - started!', 
                   sep = '')
   
   write(update, file = 'progress.txt', append = TRUE)
@@ -91,7 +85,8 @@ run_Q2 <- function(arguments) {
                                clutches_mu, 
                                clutches_sd, 
                                probs_id, 
-                               scenario)
+                               scenario, 
+                               minimum_id)
   
   # save output
   save(output, 
