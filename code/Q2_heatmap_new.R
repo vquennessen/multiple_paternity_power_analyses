@@ -36,7 +36,7 @@ pcmode_titles <- c('Random', # 'Exponential',
 nsims <- 1000
 sample_sizes <- c(32, 96)
 
-folder <- paste('2025_04_19_N100_', nsims, 'sims', sep = '')
+folder <- paste('2025_04_19_N1000_', nsims, 'sims', sep = '')
 
 data_titles <- c('base_F_base_M', 
                  'base_F_uniform_M', 
@@ -310,6 +310,8 @@ DFrandom <- DF %>%
   filter(Sample_Size == 32) %>%
   filter(Paternal_Contribution_Mode == 'Random')
 
+num_bins <- 5
+
 fig4_samplesize32_overlap <- ggplot(data = DFrandom, 
                                     aes(x = PropClutches,
                                         y = OSR, 
@@ -348,7 +350,7 @@ fig4_samplesize32_overlap <- ggplot(data = DFrandom,
   ggtitle('Sample size 32 random and dominant 90')
 
 fig4_samplesize32_overlap
-fig_name <- "fig4_samplesize32_overlap"
+fig_name <- "fig4_samplesize32_overlap_N1000"
 
 # save contour plot
 ggsave(fig4_samplesize32_overlap,

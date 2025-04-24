@@ -9,7 +9,7 @@ run_Q2 <- function(arguments) {
   n_sims                      <- arguments$Var4
   
   # model parameters
-  pop_size <- 100                               # total population size
+  pop_size <- 200                               # total population size
   
   # Fprob and Mprob based on scenario
   if (scenario == 'base_F_no_M') {
