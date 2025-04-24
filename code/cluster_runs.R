@@ -33,7 +33,11 @@ scenarios <- c('base_F_no_M',
                'uniform_F_base_M'
                )
 
-n_sims <- c(1e+03)
+n_sims <- c(1e+04)
+
+pop_size <- 500
+
+minimum_id <- 1.00
 
 # create probabilities object
 probabilities <- probability_id_fathers(hatchlings_mu = 100.58,
@@ -53,7 +57,9 @@ save(probabilities,
 DF <- expand.grid(sample_sizes, 
                   paternal_contribution_modes, 
                   scenarios, 
-                  n_sims)
+                  n_sims, 
+                  pop_size, 
+                  minimum_id)
 
 # initialize empty arguments list
 arguments <- list()
