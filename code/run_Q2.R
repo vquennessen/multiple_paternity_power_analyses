@@ -9,7 +9,7 @@ run_Q2 <- function(arguments) {
   n_sims                      <- arguments$Var4
   pop_size                    <- arguments$Var5
   minimum_id                  <- arguments$Var6
-  
+
   # Fprob and Mprob based on scenario
   if (scenario == 'base_F_no_M') {
     
