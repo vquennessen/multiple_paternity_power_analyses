@@ -12,8 +12,8 @@ library(magrittr)
 
 ##### model parameters #########################################################
 
-computer <- 'laptop'
-# computer <- 'desktop'
+# computer <- 'laptop'
+computer <- 'desktop'
 # computer <- 'cluster'
 
 ## paternal contribution modes
@@ -34,20 +34,20 @@ pcmode_titles <- c('Random', # 'Exponential',
 # data_title <- 'no_polygyny'
 # data_title <- 'uniform_Mprob_no_polygyny'
 # nsims <- 1000
-nsims <- c(10000, 10000, 1000, 1000, 1000, 1000)
+nsims <- c(10000, 10000, 1000, 1000, 1000, 1000, 1000)
 
 sample_sizes <- c(32, 96)
 
 scenarios <- c('2025_04_22_N100_10000sims', 
                '2025_04_23_N200_10000sims',
                '2025_04_23_N500_1000sims',
-               # '2025_04_19_N1000_1000sims', 
+               '2025_04_19_N1000_1000sims',
                '2025_04_24_N100_1000sims_minID0.9',
                '2025_04_25_N200_1000sims_minID0.9',
                '2025_04_26_N500_1000sims_minID0.9')
 
 # minimum IDs
-minIDs <- c(1.0, 1.0, 1.0, 0.9, 0.9, 0.9)
+minIDs <- c(1.0, 1.0, 1.0, 1.0, 0.9, 0.9, 0.9)
 
 # folders <- paste(scenarios, '_', nsims, 'sims', sep = '')
 folders <- scenarios
@@ -639,25 +639,30 @@ ggsave(fig4_pop_sizes_dominant90,
 
 ##### different population sizes - dominant90 32 base_F_base_M #################
 
-mating_system <- 'base_F_no_M'
+mating_system <- 'uniform_F_no_M'
 
 pop_sizes <- DF %>%
   filter(Sample_Size == 32) %>%
   filter(Mating_system == mating_system) %>%
   mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
                            Pop_size == 200 & minID == 0.9 ~ '(b)', 
-                           Pop_size == 500 & minID == 0.9 ~ '(c)', 
-                           Pop_size == 100 & minID == 1 ~ '(d)', 
-                           Pop_size == 200 & minID == 1 ~ '(e)', 
-                           Pop_size == 500 & minID == 1 ~ '(f)')) %>%
+                           Pop_size == 500 & minID == 0.9 ~ '(c)',
+                           Pop_size == 1000 & minID == 0.9 ~ '(d)',
+                           
+                           Pop_size == 100 & minID == 1 ~ '(e)', 
+                           Pop_size == 200 & minID == 1 ~ '(f)', 
+                           Pop_size == 500 & minID == 1 ~ '(g)', 
+                           Pop_size == 1000 & minID == 1 ~ '(h)', 
+  )) %>%
   mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
                               minID == 1 ~ 'ID 100% of fathers'))
 
 pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
-                             levels = c(100, 200, 500), 
+                             levels = c(100, 200, 500, 1000), 
                              labels = c('Population size 100', 
                                         'Population size 200',
-                                        'Population size 500'))
+                                        'Population size 500', 
+                                        'Population size 1000'))
 pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
                              levels = c('ID 90%+ of fathers', 
                                         'ID 100% of fathers'))
@@ -721,10 +726,10 @@ fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random,
   ggtitle(paste('pop sizes 32 ', mating_system, ' overlapping', sep = ''))
 
 fig5_pop_sizes_overlap
-fig_name <- paste('fig4_pop_sizes_overlap_', mating_system, sep = '')
+fig_name <- paste('fig5_pop_sizes_overlap_', mating_system, sep = '')
 
 # save contour plot
 ggsave(fig5_pop_sizes_overlap,
        file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
+       height = 15, width = 11)
 
