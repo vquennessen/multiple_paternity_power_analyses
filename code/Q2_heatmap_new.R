@@ -34,7 +34,7 @@ pcmode_titles <- c('Random', # 'Exponential',
 # data_title <- 'no_polygyny'
 # data_title <- 'uniform_Mprob_no_polygyny'
 # nsims <- 1000
-nsims <- c(10000, 10000, 1000, 1000, 1000, 1000, 1000)
+nsims <- c(10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000)
 
 sample_sizes <- c(32, 96)
 
@@ -44,10 +44,11 @@ scenarios <- c('2025_04_22_N100_10000sims',
                '2025_04_19_N1000_1000sims',
                '2025_04_24_N100_1000sims_minID0.9',
                '2025_04_25_N200_1000sims_minID0.9',
-               '2025_04_26_N500_1000sims_minID0.9')
+               '2025_04_26_N500_1000sims_minID0.9', 
+               '2025_04_27_N1000_1000sims_minID0.9')
 
 # minimum IDs
-minIDs <- c(1.0, 1.0, 1.0, 1.0, 0.9, 0.9, 0.9)
+minIDs <- c(1.0, 1.0, 1.0, 1.0, 0.9, 0.9, 0.9, 0.9)
 
 # folders <- paste(scenarios, '_', nsims, 'sims', sep = '')
 folders <- scenarios
@@ -639,7 +640,7 @@ ggsave(fig4_pop_sizes_dominant90,
 
 ##### different population sizes - dominant90 32 base_F_base_M #################
 
-mating_system <- 'uniform_F_no_M'
+mating_system <- 'uniform_F_uniform_M'
 
 pop_sizes <- DF %>%
   filter(Sample_Size == 32) %>%
