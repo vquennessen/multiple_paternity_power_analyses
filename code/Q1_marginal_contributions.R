@@ -44,7 +44,7 @@ new_fig3 <- ggplot(data = marginal,
         axis.text = element_text(size = 12))
 
 ggsave(new_fig3, 
-       file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/new_fig3.png", 
+       file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/fig3.pdf", 
        height = 4, width = 8)
 
 

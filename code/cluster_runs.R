@@ -37,7 +37,7 @@ n_sims <- c(1e+04)
 
 pop_size <- c(1000)
 
-minimum_id <- 0.9
+minimum_id <- 1
 
 # create probabilities object
 probabilities <- probability_id_fathers(hatchlings_mu = 100.58,

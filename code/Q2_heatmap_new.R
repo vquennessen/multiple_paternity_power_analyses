@@ -127,7 +127,7 @@ DF$bin <- cut(DF$Proportion,
               include_lowest = TRUE)
 
 # add facet labels as 'label' in DF
-DF$label <- rep(c('(a)', '(b)', '(c)', '(d)', '(e)', '(f)'), 
+DF$label <- rep(c('(A)', '(B)', '(C)', '(D)', '(E)', '(F)'), 
                 each = nrow(output)*length(sample_sizes)*length(pcmodes))
 
 # save DF as object
@@ -145,227 +145,227 @@ load("~/Projects/multiple_paternity_power_analyses/output/sims_results.Rda")
 # set correct directory for saving figures
 dir <- ifelse(computer == 'desktop', 'Vic', 'vique')
 
-##### random, sample size 32 ###################################################
-
-# testing
-  ggplot(data = sims_results, 
-         aes(x = PropClutches, 
-             y = OSR)) +
-  geom_contour_filled(aes(z = Proportion), bins = 5)
-
-
-fig4_random_32 <- sims_results %>% 
-  filter(Sample_Size == '32') %>%
-  filter(Paternal_Contribution_Mode == 'Random') %>%
-  filter(Pop_size == 100) %>%
-  filter(minID == 1) %>%
-  ggplot(aes(x = PropClutches, 
-             y = OSR)) +
-  geom_contour_filled(aes(z = Proportion), 
-                      bins = 5) +
-  # geom_contour_filled(breaks = seq(0, 1, by = 0.20)) +
-  # geom_tile() +
-  # scale_fill_viridis_c() +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  labs(fill = 'Proportion \n correct \n') +
-  guides(fill = guide_legend(reverse = TRUE)) + 
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(rows = vars(M_title), cols = vars(F_title)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Random PCM Sample Size 32')
-
-fig4_random_32
-fig_name <- "fig4_random_32"
-
-# save contour plot
-ggsave(fig4_random_32,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
-
-##### random, sample size 96 ###################################################
-
-fig4_random_96 <- sims_results %>% 
-  filter(Sample_Size == '96') %>%
-  filter(Paternal_Contribution_Mode == 'Random') %>%
-  filter(Pop_size == 100) %>%
-  filter(minID == 1) %>%
-  ggplot(aes(x = PropClutches, 
-             y = OSR, 
-             z = Proportion)) +
-  geom_contour_filled(bins = 5) +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  labs(fill = 'Proportion \n correct \n') +
-  guides(fill = guide_legend(reverse = TRUE)) + 
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(rows = vars(M_title), cols = vars(F_title)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Random PCM Sample Size 96')
-
-fig4_random_96
-fig_name <- "fig4_random_96"
-
-# save contour plot
-ggsave(fig4_random_96,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
-
-##### random, overlapping sample sizes 32 and 96 ###############################
-
-DF <- sims_results %>%
-  filter(Paternal_Contribution_Mode == 'Random') %>%
-  filter(Pop_size == 100) %>%
-  filter(minID == 1)
-
-DF32 <- DF %>% filter(Sample_Size == 32)
-DF96 <- DF %>% filter(Sample_Size == 96)
-
-fig4_random_overlap <- ggplot(data = DF32, aes(x = PropClutches, 
-                                               y = OSR, 
-                                               z = Proportion)) +
-  geom_contour_filled(bins = 5, 
-                      alpha = 0.5) +
-  labs(fill = 'Proportion correct \n sample size 32') +
-  guides(fill = guide_legend(reverse = TRUE, 
-                             order = 1)) +   
-  geom_contour(data = DF96, 
-               aes(x = PropClutches,
-                   y = OSR,
-                   z = Proportion, 
-                   color = stat(level)),
-               bins = num_bins, 
-               lwd = 1,
-               alpha = 1) +
-  scale_color_viridis_c(guide = FALSE,
-                        labels = c('(0.0, 0.2]',
-                                   '(0.2, 0.4]',
-                                   '(0.4, 0.6]',
-                                   '(0.6, 0.8]',
-                                   '(0.8, 1.0]')) +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(rows = vars(M_title), cols = vars(F_title)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Random PCM Sample Sizes 32 and 96') +
-  guides(
-    color = guide_legend(
-      title = 'Proportion correct \n sample size 96', 
-      override.aes = list(color = rev(viridis(5))), 
-      reverse = TRUE))
-
-fig4_random_overlap
-fig_name <- "fig4_random_overlap"
-
-# save contour plot
-ggsave(fig4_random_overlap,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
-
-##### dominant 90, overlapping sample sizes 32 and 96 ##########################
-
-DF <- sims_results %>%
-  filter(Paternal_Contribution_Mode == 'Dominant 90') %>%
-  filter(Pop_size == 100) %>%
-  filter(minID == 1)
-
-DF32 <- DF %>% filter(Sample_Size == 32)
-DF96 <- DF %>% filter(Sample_Size == 96)
-
-fig4_dominant90_overlap <- ggplot(data = DF32, aes(x = PropClutches, 
-                                               y = OSR, 
-                                               z = Proportion)) +
-  geom_contour_filled(bins = 5, 
-                      alpha = 0.5) +
-  labs(fill = 'Proportion correct \n sample size 32') +
-  guides(fill = guide_legend(reverse = TRUE, 
-                             order = 1)) +   
-  geom_contour(data = DF96, 
-               aes(x = PropClutches,
-                   y = OSR,
-                   z = Proportion, 
-                   color = stat(level)),
-               bins = num_bins, 
-               lwd = 1,
-               alpha = 1) +
-  scale_color_viridis_c(guide = FALSE,
-                        labels = c('(0.0, 0.2]',
-                                   '(0.2, 0.4]',
-                                   '(0.4, 0.6]',
-                                   '(0.6, 0.8]',
-                                   '(0.8, 1.0]')) +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(rows = vars(M_title), cols = vars(F_title)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Dominant 90 PCM Sample Sizes 32 and 96') +
-  guides(
-    color = guide_legend(
-      title = 'Proportion correct \n sample size 96', 
-      override.aes = list(color = rev(viridis(5))), 
-      reverse = TRUE))
-
-fig4_dominant90_overlap
-fig_name <- "fig4_dominant90_overlap"
-
-# save contour plot
-ggsave(fig4_dominant90_overlap,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
+# ##### random, sample size 32 ###################################################
+# 
+# # testing
+#   ggplot(data = sims_results, 
+#          aes(x = PropClutches, 
+#              y = OSR)) +
+#   geom_contour_filled(aes(z = Proportion), bins = 5)
+# 
+# 
+# fig4_random_32 <- sims_results %>% 
+#   filter(Sample_Size == '32') %>%
+#   filter(Paternal_Contribution_Mode == 'Random') %>%
+#   filter(Pop_size == 100) %>%
+#   filter(minID == 1) %>%
+#   ggplot(aes(x = PropClutches, 
+#              y = OSR)) +
+#   geom_contour_filled(aes(z = Proportion), 
+#                       bins = 5) +
+#   # geom_contour_filled(breaks = seq(0, 1, by = 0.20)) +
+#   # geom_tile() +
+#   # scale_fill_viridis_c() +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   labs(fill = 'Proportion \n correct \n') +
+#   guides(fill = guide_legend(reverse = TRUE)) + 
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(rows = vars(M_title), cols = vars(F_title)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Random PCM Sample Size 32')
+# 
+# fig4_random_32
+# fig_name <- "fig4_random_32"
+# 
+# # save contour plot
+# ggsave(fig4_random_32,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 11, width = 11)
+# 
+# ##### random, sample size 96 ###################################################
+# 
+# fig4_random_96 <- sims_results %>% 
+#   filter(Sample_Size == '96') %>%
+#   filter(Paternal_Contribution_Mode == 'Random') %>%
+#   filter(Pop_size == 100) %>%
+#   filter(minID == 1) %>%
+#   ggplot(aes(x = PropClutches, 
+#              y = OSR, 
+#              z = Proportion)) +
+#   geom_contour_filled(bins = 5) +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   labs(fill = 'Proportion \n correct \n') +
+#   guides(fill = guide_legend(reverse = TRUE)) + 
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(rows = vars(M_title), cols = vars(F_title)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Random PCM Sample Size 96')
+# 
+# fig4_random_96
+# fig_name <- "fig4_random_96"
+# 
+# # save contour plot
+# ggsave(fig4_random_96,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 11, width = 11)
+# 
+# ##### random, overlapping sample sizes 32 and 96 ###############################
+# 
+# DF <- sims_results %>%
+#   filter(Paternal_Contribution_Mode == 'Random') %>%
+#   filter(Pop_size == 100) %>%
+#   filter(minID == 1)
+# 
+# DF32 <- DF %>% filter(Sample_Size == 32)
+# DF96 <- DF %>% filter(Sample_Size == 96)
+# 
+# fig4_random_overlap <- ggplot(data = DF32, aes(x = PropClutches, 
+#                                                y = OSR, 
+#                                                z = Proportion)) +
+#   geom_contour_filled(bins = 5, 
+#                       alpha = 0.5) +
+#   labs(fill = 'Proportion correct \n sample size 32') +
+#   guides(fill = guide_legend(reverse = TRUE, 
+#                              order = 1)) +   
+#   geom_contour(data = DF96, 
+#                aes(x = PropClutches,
+#                    y = OSR,
+#                    z = Proportion, 
+#                    color = stat(level)),
+#                bins = num_bins, 
+#                lwd = 1,
+#                alpha = 1) +
+#   scale_color_viridis_c(guide = FALSE,
+#                         labels = c('(0.0, 0.2]',
+#                                    '(0.2, 0.4]',
+#                                    '(0.4, 0.6]',
+#                                    '(0.6, 0.8]',
+#                                    '(0.8, 1.0]')) +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(rows = vars(M_title), cols = vars(F_title)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Random PCM Sample Sizes 32 and 96') +
+#   guides(
+#     color = guide_legend(
+#       title = 'Proportion correct \n sample size 96', 
+#       override.aes = list(color = rev(viridis(5))), 
+#       reverse = TRUE))
+# 
+# fig4_random_overlap
+# fig_name <- "fig4_random_overlap"
+# 
+# # save contour plot
+# ggsave(fig4_random_overlap,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 11, width = 11)
+# 
+# ##### dominant 90, overlapping sample sizes 32 and 96 ##########################
+# 
+# DF <- sims_results %>%
+#   filter(Paternal_Contribution_Mode == 'Dominant 90') %>%
+#   filter(Pop_size == 100) %>%
+#   filter(minID == 1)
+# 
+# DF32 <- DF %>% filter(Sample_Size == 32)
+# DF96 <- DF %>% filter(Sample_Size == 96)
+# 
+# fig4_dominant90_overlap <- ggplot(data = DF32, aes(x = PropClutches, 
+#                                                y = OSR, 
+#                                                z = Proportion)) +
+#   geom_contour_filled(bins = 5, 
+#                       alpha = 0.5) +
+#   labs(fill = 'Proportion correct \n sample size 32') +
+#   guides(fill = guide_legend(reverse = TRUE, 
+#                              order = 1)) +   
+#   geom_contour(data = DF96, 
+#                aes(x = PropClutches,
+#                    y = OSR,
+#                    z = Proportion, 
+#                    color = stat(level)),
+#                bins = num_bins, 
+#                lwd = 1,
+#                alpha = 1) +
+#   scale_color_viridis_c(guide = FALSE,
+#                         labels = c('(0.0, 0.2]',
+#                                    '(0.2, 0.4]',
+#                                    '(0.4, 0.6]',
+#                                    '(0.6, 0.8]',
+#                                    '(0.8, 1.0]')) +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(rows = vars(M_title), cols = vars(F_title)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Dominant 90 PCM Sample Sizes 32 and 96') +
+#   guides(
+#     color = guide_legend(
+#       title = 'Proportion correct \n sample size 96', 
+#       override.aes = list(color = rev(viridis(5))), 
+#       reverse = TRUE))
+# 
+# fig4_dominant90_overlap
+# fig_name <- "fig4_dominant90_overlap"
+# 
+# # save contour plot
+# ggsave(fig4_dominant90_overlap,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 11, width = 11)
 
 ##### sample size 32, overlapping PCMs random and dominant 90 ##################
 
@@ -382,7 +382,7 @@ fig4_samplesize32_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
                                                    z = Proportion)) +
   geom_contour_filled(bins = 5, 
                       alpha = 0.5) +
-  labs(fill = 'Proportion correct \n Random PCM') +
+  labs(fill = 'Confidence \n Random PCM') +
   guides(fill = guide_legend(reverse = TRUE, 
                              order = 1)) +   
   geom_contour(data = DFdominant90, 
@@ -420,7 +420,7 @@ fig4_samplesize32_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
   # ggtitle('Sample Size 32, Random and Dominant 90 PCMs') +
   guides(
     color = guide_legend(
-      title = 'Proportion correct \n Dominant 90 PCM', 
+      title = 'Confidence \n Dominant 90 PCM', 
       override.aes = list(color = rev(viridis(5))), 
       reverse = TRUE))
 
@@ -430,6 +430,11 @@ fig_name <- "fig4_samplesize32_overlap"
 # save contour plot
 ggsave(fig4_samplesize32_overlap,
        file = paste('figures/', fig_name, '.png', sep = ''), 
+       height = 11, width = 11)
+
+# save contour plot
+ggsave(fig4_samplesize32_overlap,
+       file = 'C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/figure 4.pdf', 
        height = 11, width = 11)
 
 ##### sample size 96, overlapping PCMs random and dominant 90 ##################
@@ -447,7 +452,7 @@ fig4_samplesize96_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
                                                          z = Proportion)) +
   geom_contour_filled(bins = 5, 
                       alpha = 0.5) +
-  labs(fill = 'Proportion correct \n Random PCM') +
+  labs(fill = 'Confidence \n Random PCM') +
   guides(fill = guide_legend(reverse = TRUE, 
                              order = 1)) +   
   geom_contour(data = DFdominant90, 
@@ -485,7 +490,7 @@ fig4_samplesize96_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
   # ggtitle('Sample Size 96, Random and Dominant 90 PCMs') +
   guides(
     color = guide_legend(
-      title = 'Proportion correct \n Dominant 90 PCM', 
+      title = 'Confidence \n Dominant 90 PCM', 
       override.aes = list(color = rev(viridis(5))), 
       reverse = TRUE))
 
@@ -495,6 +500,11 @@ fig_name <- "fig4_samplesize96_overlap"
 # save contour plot
 ggsave(fig4_samplesize96_overlap,
        file = paste('figures/', fig_name, '.png', sep = ''), 
+       height = 11, width = 11)
+
+# save contour plot
+ggsave(fig4_samplesize96_overlap,
+       file = 'C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/figure S1.pdf', 
        height = 11, width = 11)
 
 # ##### why are they all the same??? #############################################
@@ -553,168 +563,168 @@ ggsave(fig4_samplesize96_overlap,
 # 
 
 
-##### different population sizes - random 32 base_F_base_M #####################
+# ##### different population sizes - random 32 base_F_base_M #####################
+# 
+# pop_sizes <- DF %>%
+#   filter(Paternal_Contribution_Mode == 'Random') %>%
+#   filter(Sample_Size == 32) %>%
+#   filter(Mating_system == 'base_F_base_M') %>%
+#   mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
+#                            Pop_size == 200 & minID == 0.9 ~ '(b)', 
+#                            Pop_size == 500 & minID == 0.9 ~ '(c)', 
+#                            Pop_size == 100 & minID == 1 ~ '(d)', 
+#                            Pop_size == 200 & minID == 1 ~ '(e)', 
+#                            Pop_size == 500 & minID == 1 ~ '(f)')) %>%
+#   mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
+#                               minID == 1 ~ 'ID 100% of fathers'))
+# 
+# pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
+#                              levels = c(100, 200, 500), 
+#                              labels = c('Population size 100', 
+#                                         'Population size 200',
+#                                         'Population size 500'))
+# pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
+#                              levels = c('ID 90%+ of fathers', 
+#                                         'ID 100% of fathers'))
+# 
+# colors <- viridisLite::viridis(5)
+# 
+# 
+# fig4_pop_sizes_random <- ggplot(data = pop_sizes, 
+#                                 aes(x = PropClutches,
+#                                     y = OSR, 
+#                                     z = Proportion)) +
+#   geom_contour_filled(
+#     # bins = n_distinct(DF$bin, na.rm = TRUE)
+#     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.000000001)
+#   ) +
+#   # scale_color_viridis_d() +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   labs(fill = 'Proportion \n correct \n') +
+#   guides(fill = guide_legend(reverse = TRUE)) + 
+#   scale_fill_manual(labels = c('(0, 0.2]', 
+#                                '(0.2, 0.4]', 
+#                                '(0.4, 0.6]', 
+#                                '(0.6, 0.8]', 
+#                                '(0.8, 0.1)'), 
+#                     values = colors) +
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(rows = vars(ID_label), 
+#              cols = vars(Pop_size)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Random 32 base_F_base_M')
+# 
+# fig4_pop_sizes_random
+# fig_name <- "fig4_pop_sizes_random"
+# 
+# # save contour plot
+# ggsave(fig4_pop_sizes_random,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 6, width = 12)
 
-pop_sizes <- DF %>%
-  filter(Paternal_Contribution_Mode == 'Random') %>%
-  filter(Sample_Size == 32) %>%
-  filter(Mating_system == 'base_F_base_M') %>%
-  mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
-                           Pop_size == 200 & minID == 0.9 ~ '(b)', 
-                           Pop_size == 500 & minID == 0.9 ~ '(c)', 
-                           Pop_size == 100 & minID == 1 ~ '(d)', 
-                           Pop_size == 200 & minID == 1 ~ '(e)', 
-                           Pop_size == 500 & minID == 1 ~ '(f)')) %>%
-  mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
-                              minID == 1 ~ 'ID 100% of fathers'))
+# ##### different population sizes - dominant90 32 base_F_base_M #################
+# 
+# pop_sizes <- DF %>%
+#   filter(Paternal_Contribution_Mode == 'Dominant 90') %>%
+#   filter(Sample_Size == 32) %>%
+#   filter(Mating_system == 'base_F_base_M') %>%
+#   mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
+#                            Pop_size == 200 & minID == 0.9 ~ '(b)', 
+#                            Pop_size == 500 & minID == 0.9 ~ '(c)', 
+#                            Pop_size == 100 & minID == 1 ~ '(d)', 
+#                            Pop_size == 200 & minID == 1 ~ '(e)', 
+#                            Pop_size == 500 & minID == 1 ~ '(f)')) %>%
+#   mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
+#                               minID == 1 ~ 'ID 100% of fathers'))
+# 
+# pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
+#                              levels = c(100, 200, 500), 
+#                              labels = c('Population size 100', 
+#                                         'Population size 200',
+#                                         'Population size 500'))
+# pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
+#                              levels = c('ID 90%+ of fathers', 
+#                                         'ID 100% of fathers'))
+# 
+# colors <- viridisLite::viridis(5)
+# 
+# 
+# fig4_pop_sizes_dominant90 <- ggplot(data = pop_sizes, 
+#                                     aes(x = PropClutches,
+#                                         y = OSR, 
+#                                         z = Proportion)) +
+#   geom_contour_filled(
+#     # bins = n_distinct(DF$bin, na.rm = TRUE)
+#     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.000000001)
+#   ) +
+#   # scale_color_viridis_d() +
+#   xlab('Proportion of clutches sampled') +
+#   ylab('Operational sex ratio') +
+#   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
+#   labs(fill = 'Proportion \n correct \n') +
+#   guides(fill = guide_legend(reverse = TRUE)) + 
+#   scale_fill_manual(labels = c('(0, 0.2]', 
+#                                '(0.2, 0.4]', 
+#                                '(0.4, 0.6]', 
+#                                '(0.6, 0.8]', 
+#                                '(0.8, 0.1)'), 
+#                     values = colors) +
+#   theme_minimal() +
+#   theme(panel.grid.minor = element_blank()) +
+#   theme(text = element_text(size = 20), 
+#         axis.text = element_text(size = 15)) +
+#   geom_text(aes(x = 0.15, 
+#                 y = 0.85, 
+#                 label = label, 
+#                 group = label), 
+#             size = 7, colour = 'white',
+#             inherit.aes = FALSE) +
+#   facet_grid(cols = vars(ID_label), 
+#              rows = vars(Pop_size)) +
+#   theme(panel.spacing.x = unit(1.5, "lines")) +
+#   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
+#   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
+#   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
+#   ggtitle('Dominant 90 32 base_F_base_M')
+# 
+# fig4_pop_sizes_dominant90
+# fig_name <- "fig4_pop_sizes_dominant90"
+# 
+# # save contour plot
+# ggsave(fig4_pop_sizes_dominant90,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 6, width = 12)
 
-pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
-                             levels = c(100, 200, 500), 
-                             labels = c('Population size 100', 
-                                        'Population size 200',
-                                        'Population size 500'))
-pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
-                             levels = c('ID 90%+ of fathers', 
-                                        'ID 100% of fathers'))
-
-colors <- viridisLite::viridis(5)
-
-
-fig4_pop_sizes_random <- ggplot(data = pop_sizes, 
-                                aes(x = PropClutches,
-                                    y = OSR, 
-                                    z = Proportion)) +
-  geom_contour_filled(
-    # bins = n_distinct(DF$bin, na.rm = TRUE)
-    breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.000000001)
-  ) +
-  # scale_color_viridis_d() +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  labs(fill = 'Proportion \n correct \n') +
-  guides(fill = guide_legend(reverse = TRUE)) + 
-  scale_fill_manual(labels = c('(0, 0.2]', 
-                               '(0.2, 0.4]', 
-                               '(0.4, 0.6]', 
-                               '(0.6, 0.8]', 
-                               '(0.8, 0.1)'), 
-                    values = colors) +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(rows = vars(ID_label), 
-             cols = vars(Pop_size)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Random 32 base_F_base_M')
-
-fig4_pop_sizes_random
-fig_name <- "fig4_pop_sizes_random"
-
-# save contour plot
-ggsave(fig4_pop_sizes_random,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 6, width = 12)
-
-##### different population sizes - dominant90 32 base_F_base_M #################
-
-pop_sizes <- DF %>%
-  filter(Paternal_Contribution_Mode == 'Dominant 90') %>%
-  filter(Sample_Size == 32) %>%
-  filter(Mating_system == 'base_F_base_M') %>%
-  mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
-                           Pop_size == 200 & minID == 0.9 ~ '(b)', 
-                           Pop_size == 500 & minID == 0.9 ~ '(c)', 
-                           Pop_size == 100 & minID == 1 ~ '(d)', 
-                           Pop_size == 200 & minID == 1 ~ '(e)', 
-                           Pop_size == 500 & minID == 1 ~ '(f)')) %>%
-  mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
-                              minID == 1 ~ 'ID 100% of fathers'))
-
-pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
-                             levels = c(100, 200, 500), 
-                             labels = c('Population size 100', 
-                                        'Population size 200',
-                                        'Population size 500'))
-pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
-                             levels = c('ID 90%+ of fathers', 
-                                        'ID 100% of fathers'))
-
-colors <- viridisLite::viridis(5)
-
-
-fig4_pop_sizes_dominant90 <- ggplot(data = pop_sizes, 
-                                    aes(x = PropClutches,
-                                        y = OSR, 
-                                        z = Proportion)) +
-  geom_contour_filled(
-    # bins = n_distinct(DF$bin, na.rm = TRUE)
-    breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.000000001)
-  ) +
-  # scale_color_viridis_d() +
-  xlab('Proportion of clutches sampled') +
-  ylab('Operational sex ratio') +
-  scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  labs(fill = 'Proportion \n correct \n') +
-  guides(fill = guide_legend(reverse = TRUE)) + 
-  scale_fill_manual(labels = c('(0, 0.2]', 
-                               '(0.2, 0.4]', 
-                               '(0.4, 0.6]', 
-                               '(0.6, 0.8]', 
-                               '(0.8, 0.1)'), 
-                    values = colors) +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank()) +
-  theme(text = element_text(size = 20), 
-        axis.text = element_text(size = 15)) +
-  geom_text(aes(x = 0.15, 
-                y = 0.85, 
-                label = label, 
-                group = label), 
-            size = 7, colour = 'white',
-            inherit.aes = FALSE) +
-  facet_grid(cols = vars(ID_label), 
-             rows = vars(Pop_size)) +
-  theme(panel.spacing.x = unit(1.5, "lines")) +
-  theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
-  theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
-  theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Dominant 90 32 base_F_base_M')
-
-fig4_pop_sizes_dominant90
-fig_name <- "fig4_pop_sizes_dominant90"
-
-# save contour plot
-ggsave(fig4_pop_sizes_dominant90,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 6, width = 12)
-
-##### different population sizes - dominant90 32 base_F_base_M #################
+##### different population sizes - dominant90 32 uniform_F_uniform_M ###########
 
 mating_system <- 'uniform_F_uniform_M'
 
 pop_sizes <- DF %>%
   filter(Sample_Size == 32) %>%
   filter(Mating_system == mating_system) %>%
-  mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(a)', 
-                           Pop_size == 200 & minID == 0.9 ~ '(b)', 
-                           Pop_size == 500 & minID == 0.9 ~ '(c)',
-                           Pop_size == 1000 & minID == 0.9 ~ '(d)',
+  mutate(label = case_when(Pop_size == 100 & minID == 0.9 ~ '(A)', 
+                           Pop_size == 200 & minID == 0.9 ~ '(B)', 
+                           Pop_size == 500 & minID == 0.9 ~ '(C)',
+                           Pop_size == 1000 & minID == 0.9 ~ '(D)',
                            
-                           Pop_size == 100 & minID == 1 ~ '(e)', 
-                           Pop_size == 200 & minID == 1 ~ '(f)', 
-                           Pop_size == 500 & minID == 1 ~ '(g)', 
-                           Pop_size == 1000 & minID == 1 ~ '(h)', 
+                           Pop_size == 100 & minID == 1 ~ '(E)', 
+                           Pop_size == 200 & minID == 1 ~ '(F)', 
+                           Pop_size == 500 & minID == 1 ~ '(G)', 
+                           Pop_size == 1000 & minID == 1 ~ '(H)', 
   )) %>%
   mutate(ID_label = case_when(minID == 0.9 ~ 'ID 90%+ of fathers', 
                               minID == 1 ~ 'ID 100% of fathers'))

@@ -17,7 +17,7 @@ theme(text = element_text(size = 20),
 
 # separate out individual figures
 A <- figs[[1]] + theme(legend.position = 'none') + xlab('') + 
-  ylab('Proportion correct') + ggtitle('(a) Random') +
+  ylab('') + ggtitle('(A) Random') +
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size)) +
@@ -25,13 +25,13 @@ A <- figs[[1]] + theme(legend.position = 'none') + xlab('') +
   theme(plot.margin = margin(0, 0.25, 0, 0, 'cm'))
 
 B <- figs[[2]] + theme(legend.position = 'none') + xlab('') + ylab('') + 
-  ggtitle('(b) Exponential') +
+  ggtitle('(B) Exponential') +
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size))
 
 C <- figs[[3]] + theme(legend.position = 'none') + xlab('') + 
-  ylab('Proportion correct') + ggtitle('(c) Dominant (50%)') +
+  ylab('Confidence') + ggtitle('(C) Dominant (50%)') +
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size))  +
@@ -39,15 +39,15 @@ C <- figs[[3]] + theme(legend.position = 'none') + xlab('') +
   theme(plot.margin = margin(0, 0.25, 0, 0, 'cm'))
 
 D <- figs[[4]] + labs(col = 'Number of \n fathers \n') + xlab('') + ylab('') + 
-  ggtitle('(d) Dominant (70%)') +
+  ggtitle('(D) Dominant (70%)') +
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size), 
         legend.title = element_text(size = 12), 
         legend.text = element_text(size = 12))
 
-E <- figs[[5]] + theme(legend.position = 'none') + xlab('Hatchlings sampled') +
-  ylab('Proportion correct') + ggtitle('(e) Dominant (90%)') +
+E <- figs[[5]] + theme(legend.position = 'none') + xlab('Offspring sampled') +
+  ylab('') + ggtitle('(E) Dominant (90%)') +
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size))  +
@@ -55,8 +55,8 @@ E <- figs[[5]] + theme(legend.position = 'none') + xlab('Hatchlings sampled') +
   theme(axis.title.x = element_text(vjust = -2)) +
   theme(plot.margin = margin(0, 0.25, 0, 0, 'cm'))
 
-G <- figs[[6]] + theme(legend.position = 'none') + xlab('Hatchlings sampled') + 
-  ylab('') + ggtitle('(f) Mixed Dominant') + 
+G <- figs[[6]] + theme(legend.position = 'none') + xlab('Offspring sampled') + 
+  ylab('') + ggtitle('(F) Mixed Dominant') + 
   theme(axis.text = element_text(size = axis_ticks_size), 
         axis.title = element_text(size = axis_title_size), 
         title = element_text(size = title_size)) +
@@ -77,8 +77,8 @@ patchwork2
 final_fig <- patchwork2 + plot_annotation(tag_levels = "a")
 
 # save
-ggsave(filename = 'fig2.pdf', 
-       path = 'C://Users/Vic/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/figures/',
+ggsave(filename = 'figure 2.pdf', 
+       path = 'C://Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2',
        plot = patchwork2, 
        width = 7, 
        height = 7)

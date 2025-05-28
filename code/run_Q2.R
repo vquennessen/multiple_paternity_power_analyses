@@ -90,7 +90,7 @@ run_Q2 <- function(arguments) {
   
   # save output
   save(output, 
-       file = paste('output/',
+       file = paste('output/2025_05_27_N1000_10000sims/',
                     scenario, 
                     '/', 
                     scenario, 
