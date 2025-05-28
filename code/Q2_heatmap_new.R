@@ -482,7 +482,7 @@ fig4_samplesize96_overlap <- ggplot(data = DFrandom, aes(x = PropClutches,
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle('Sample Size 96, Random and Dominant 90 PCMs') +
+  # ggtitle('Sample Size 96, Random and Dominant 90 PCMs') +
   guides(
     color = guide_legend(
       title = 'Proportion correct \n Dominant 90 PCM', 
