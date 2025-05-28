@@ -35,7 +35,7 @@ scenarios <- c('base_F_no_M',
 
 n_sims <- c(1e+04)
 
-pop_size <- c(500)
+pop_size <- c(1000)
 
 minimum_id <- 0.9
 
