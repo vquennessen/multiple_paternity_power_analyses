@@ -16,6 +16,8 @@ computer <- 'laptop'
 # computer <- 'desktop'
 # computer <- 'cluster'
 
+user <- ifelse(computer == 'laptop', 'vique', 'Vic')
+
 ## paternal contribution modes
 pcmodes <- c('random',
              # 'exponential',
@@ -34,18 +36,18 @@ pcmode_titles <- c('Random', # 'Exponential',
 # data_title <- 'no_polygyny'
 # data_title <- 'uniform_Mprob_no_polygyny'
 # nsims <- 1000
-nsims <- c(10000, 10000, 10000, 1000, 10000, 10000, 10000, 1000)
+nsims <- c(10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000)
 
 sample_sizes <- c(32, 96)
 
 scenarios <- c('2025_04_22_N100_10000sims', 
                '2025_04_23_N200_10000sims',
                '2025_04_27_N500_10000sims',
-               '2025_04_19_N1000_1000sims',
+               '2025_05_27_N1000_10000sims',
                '2025_05_05_N100_10000sims_minID0.9',
                '2025_05_06_N200_10000sims_minID0.9',
                '2025_05_09_N500_10000sims_minID0.9', 
-               '2025_04_27_N1000_1000sims_minID0.9')
+               '2025_05_25_N1000_10000sims_minID0.9')
 
 # minimum IDs
 minIDs <- c(1.0, 1.0, 1.0, 1.0, 0.9, 0.9, 0.9, 0.9)
@@ -86,7 +88,8 @@ for (f in 1:length(folders)) {
         sample_size <- sample_sizes[s]
         
         # load data
-        load(paste('~/Projects/multiple_paternity_power_analyses/output/', 
+        load(paste('C:/Users/', user, '/Box Sync/Quennessen_Thesis/PhD Thesis/', 
+                   'model output/multiple paternity power analyses/', 
                    folders[f], '/', mating_systems[ms], '/', mating_systems[ms], 
                    '_', sample_size, 'samples_', pcmode, '_', nsims[f], 
                    'sims.Rdata', sep = ''))
@@ -141,9 +144,6 @@ save(sims_results,
 
 # load in data
 load("~/Projects/multiple_paternity_power_analyses/output/sims_results.Rda")
-
-# set correct directory for saving figures
-dir <- ifelse(computer == 'desktop', 'Vic', 'vique')
 
 # ##### random, sample size 32 ###################################################
 # 
@@ -432,11 +432,6 @@ ggsave(fig4_samplesize32_overlap,
        file = paste('figures/', fig_name, '.png', sep = ''), 
        height = 11, width = 11)
 
-# save contour plot
-ggsave(fig4_samplesize32_overlap,
-       file = 'C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/figure 4.pdf', 
-       height = 11, width = 11)
-
 ##### sample size 96, overlapping PCMs random and dominant 90 ##################
 
 DF <- sims_results %>%
@@ -500,11 +495,6 @@ fig_name <- "fig4_samplesize96_overlap"
 # save contour plot
 ggsave(fig4_samplesize96_overlap,
        file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 11, width = 11)
-
-# save contour plot
-ggsave(fig4_samplesize96_overlap,
-       file = 'C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/figure S1.pdf', 
        height = 11, width = 11)
 
 # ##### why are they all the same??? #############################################
@@ -711,7 +701,8 @@ ggsave(fig4_samplesize96_overlap,
 
 ##### different population sizes - dominant90 32 uniform_F_uniform_M ###########
 
-mating_system <- 'uniform_F_uniform_M'
+# mating_system <- 'uniform_F_uniform_M'
+mating_system <- 'uniform_F_no_M'
 
 pop_sizes <- DF %>%
   filter(Sample_Size == 32) %>%
@@ -731,10 +722,10 @@ pop_sizes <- DF %>%
 
 pop_sizes$Pop_size <- factor(pop_sizes$Pop_size, 
                              levels = c(100, 200, 500, 1000), 
-                             labels = c('Population size 100', 
-                                        'Population size 200',
-                                        'Population size 500', 
-                                        'Population size 1000'))
+                             labels = c('N = 100', 
+                                        'N = 200',
+                                        'N = 500', 
+                                        'N = 1000'))
 pop_sizes$ID_label <- factor(pop_sizes$ID_label, 
                              levels = c('ID 90%+ of fathers', 
                                         'ID 100% of fathers'))
@@ -747,7 +738,8 @@ pop_sizes_dominant90 <- pop_sizes %>%
   filter(Paternal_Contribution_Mode == 'Dominant 90')
 
 
-fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random, 
+# fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random, 
+figS2_pop_sizes_overlap <- ggplot(data = pop_sizes_random, 
                                  aes(x = PropClutches,
                                      y = OSR, 
                                      z = Proportion)) +
@@ -756,8 +748,9 @@ fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random,
     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1.000000001), 
     alpha = 0.5
   ) +
-  labs(fill = 'Proportion \n correct \n') +
-  guides(fill = guide_legend(reverse = TRUE)) + 
+  labs(fill = 'Confidence \n Random PCM') +
+  guides(fill = guide_legend(reverse = TRUE, 
+                             order = 1)) + 
   scale_fill_manual(labels = c('(0, 0.2]', 
                                '(0.2, 0.4]', 
                                '(0.4, 0.6]', 
@@ -773,12 +766,15 @@ fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random,
                binwidth = 0.2,
                lwd = 1,
                alpha = 1) +
-  scale_color_viridis_c() +
-  # scale_color_viridis_d() +
+  scale_color_viridis_c(guide = FALSE,
+                        labels = c('(0.0, 0.2]',
+                                   '(0.2, 0.4]',
+                                   '(0.4, 0.6]',
+                                   '(0.6, 0.8]',
+                                   '(0.8, 1.0]')) +
   xlab('Proportion of clutches sampled') +
   ylab('Operational sex ratio') +
   scale_y_continuous(breaks = c(0.1, 0.3, 0.5, 0.7, 0.9)) +
-  
   theme_minimal() +
   theme(panel.grid.minor = element_blank()) +
   theme(text = element_text(size = 20), 
@@ -795,13 +791,24 @@ fig5_pop_sizes_overlap <- ggplot(data = pop_sizes_random,
   theme(axis.title.y = element_text(vjust = 3, hjust = 0.5)) +
   theme(axis.title.x = element_text(vjust = -1, hjust = 0.5)) +
   theme(plot.margin = margin(1, 0, 0.75, 0.75, "cm")) +
-  ggtitle(paste('pop sizes 32 ', mating_system, ' overlapping', sep = ''))
+  guides(
+    color = guide_legend(
+      title = 'Confidence \n Dominant 90 PCM', 
+      override.aes = list(color = rev(viridis(5))), 
+      reverse = TRUE))
 
-fig5_pop_sizes_overlap
-fig_name <- paste('fig5_pop_sizes_overlap_', mating_system, sep = '')
+# fig5_pop_sizes_overlap
+# fig_name <- paste('fig5_pop_sizes_overlap_', mating_system, sep = '')
+
+figS2_pop_sizes_overlap
+fig_name <- paste('figS2_pop_sizes_overlap_', mating_system, sep = '')
 
 # save contour plot
-ggsave(fig5_pop_sizes_overlap,
-       file = paste('figures/', fig_name, '.png', sep = ''), 
-       height = 15, width = 11)
+# ggsave(fig5_pop_sizes_overlap,
+#        file = paste('figures/', fig_name, '.png', sep = ''), 
+#        height = 14, width = 11)
+
+ggsave(figS2_pop_sizes_overlap,
+       file = paste('figures/', fig_name, '.pdf', sep = ''), 
+       height = 14, width = 11)
 
