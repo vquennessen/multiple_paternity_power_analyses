@@ -38,14 +38,16 @@ new_fig3 <- ggplot(data = marginal,
                                            seed = 25)) +
   scale_fill_manual(values = colors) +
   xlab('Paternal contribution mode') +
-  ylab('Marginal contribution \n of least dominant male') +
+  ylab('Marginal contribution') +
   theme_bw() +
-  theme(text = element_text(size = 15), 
-        axis.text = element_text(size = 12))
+  theme(text = element_text(size = 22), 
+        axis.text = element_text(size = 18), 
+        axis.title = element_text(size = 27),
+        axis.title.x = element_text(vjust = -0.6), 
+        axis.title.y = element_text(vjust = 2.5), 
+        plot.margin = margin(0.5, 0, 0.5, 0.75, 'cm')) +
+  labs(fill = 'Number of \n fathers')
 
 ggsave(new_fig3, 
        file = "C:/Users/vique/Box Sync/Quennessen_Thesis/PhD Thesis/chapters/chapter 1/submission 2/fig3.pdf", 
-       height = 4, width = 8)
-
-
-
+       height = 7, width = 14)
